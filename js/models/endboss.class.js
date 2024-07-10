@@ -2,7 +2,7 @@ class Endboss extends moveableObject {
   height = 400;
   width = 400;
   y = 90;
-  energy = 15;
+  energy = 50;
   IMAGES_WALKING = [
     "./img/4_enemie_boss_chicken/2_alert/G5.png",
     "./img/4_enemie_boss_chicken/2_alert/G6.png",
@@ -59,7 +59,7 @@ class Endboss extends moveableObject {
   getsHitByBottle() {
     clearInterval(this.animationInterval);
     this.energy -= 5;
-    //  this.playHurtAnimation();
+    console.log(this.energy);
     if (this.energy <= 0) {
       this.playDeadAnimation();
     } else {
