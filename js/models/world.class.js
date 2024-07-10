@@ -57,11 +57,7 @@ class World {
       this.throwableObjects.forEach((bottle) => {
          this.level.enemies.forEach((enemy) => {
             if (bottle.isColliding(enemy)) {
-               enemy.energy -= 5;
-               console.log(enemy.energy);
-               if (enemy.energy == 0) {
-                  this.playAnimation(this.IMAGES_ATTACK);
-               }
+               enemy.getsHitByBottle();
             }
          });
       });
