@@ -8,6 +8,8 @@ class CoinsStatusBar extends DrawableObject {
       './img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png',
    ];
 
+   collectedCoins = 0;
+
    constructor() {
       // super(), um die Methoden des übergeordneten Objekts zu intitialisieren
       super();
@@ -18,5 +20,15 @@ class CoinsStatusBar extends DrawableObject {
       this.width = 200;
       this.height = 60;
       //   this.setPercentage(100);
+   }
+
+   collectCoin() {
+      this.collectedCoins += 1;
+      this.setPercentage(this.collectedCoins * 10);
+   }
+
+   setPercentage(percentage) {
+      let path = this.IMAGES_COINS[Math.floor(percentage / 20)];
+      this.loadImage(path);
    }
 }
