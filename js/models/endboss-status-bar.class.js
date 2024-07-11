@@ -1,0 +1,33 @@
+class EndbossStatusBar extends DrawableObject {
+   IMAGES_ENDBOSS_STATUS = [
+      './img/7_statusbars/2_statusbar_endboss/blue/blue0.png',
+      './img/7_statusbars/2_statusbar_endboss/blue/blue20.png',
+      './img/7_statusbars/2_statusbar_endboss/blue/blue40.png',
+      './img/7_statusbars/2_statusbar_endboss/blue/blue60.png',
+      './img/7_statusbars/2_statusbar_endboss/blue/blue80.png',
+      './img/7_statusbars/2_statusbar_endboss/blue/blue100.png',
+   ];
+
+   percentage = 100;
+
+   constructor() {
+      super();
+      //   this.loadImage(this.IMAGES_ENDBOSS_STATUS[0]);
+      this.loadImages(this.IMAGES_ENDBOSS_STATUS);
+      this.x = 500;
+      this.y = 0;
+      this.width = 200;
+      this.height = 60;
+      this.setPercentage(100);
+   }
+
+   getsHit() {
+      this.percentage -= 20;
+      this.setPercentage(this.percentage);
+   }
+
+   setPercentage(percentage) {
+      let path = this.IMAGES_ENDBOSS_STATUS[Math.floor(percentage / 20)];
+      this.loadImage(path);
+   }
+}

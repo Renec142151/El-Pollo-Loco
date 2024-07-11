@@ -1,9 +1,6 @@
 class World {
    level = level1;
    character = new Character();
-   //   endboss = new Endboss();
-   //   chicken = new Chicken();
-   //   coins = new Coins();
    canvas;
    ctx;
    keyboard;
@@ -12,7 +9,9 @@ class World {
    statusBar = new StatusBar();
    coinsStatusBar = new CoinsStatusBar();
    bottles = new Bottles();
+   endbossStatusBar = new EndbossStatusBar();
    throwableObjects = [];
+
    // constructor: eine Funktion, die immer ausgeführt wird, wenn eine neue Instanz der Klasse erstellt wird
    constructor(canvas) {
       this.ctx = canvas.getContext('2d');
@@ -43,7 +42,7 @@ class World {
       this.level.bottles.forEach((bottle, index) => {
          if (this.character.isColliding(bottle)) {
             this.level.bottles.splice(index, 1); // Entfernt die Bottle aus dem Array
-            this.bottlesStatusBar.collectBottle(); // Aktualisiert die Statusbar
+            this.bottlesStatusBar.collectBottle();
          }
       });
    }
@@ -58,9 +57,11 @@ class World {
    }
 
    checkThrowObjects() {
-      if (this.keyboard.D) {
+      if (this.keyboard.D && !this.bottlesStatusBar.collectedBottles <= 0) {
          let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
          this.throwableObjects.push(bottle);
+         this.bottlesStatusBar.collectedBottles--;
+         this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10); // Passt den Wert der Bottle StatusBar an
       }
    }
 
@@ -79,10 +80,14 @@ class World {
    }
 
    hitEnemyWithBottle() {
-      this.throwableObjects.forEach((bottle) => {
+      this.throwableObjects.forEach((bottle, bottleIndex) => {
          this.level.enemies.forEach((enemy) => {
             if (bottle.isColliding(enemy) && !enemy.dead) {
                enemy.getsHitByBottle();
+               this.throwableObjects.splice(bottleIndex, 1);
+               if (enemy instanceof Endboss) {
+                  this.endbossStatusBar.getsHit();
+               }
             }
          });
       });
@@ -98,6 +103,7 @@ class World {
       this.addToMap(this.bottlesStatusBar);
       this.addToMap(this.statusBar);
       this.addToMap(this.coinsStatusBar);
+      this.addToMap(this.endbossStatusBar);
       this.ctx.translate(this.camera_x, 0); // Forwards
 
       this.addToMap(this.character);
