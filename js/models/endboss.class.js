@@ -4,10 +4,12 @@ class Endboss extends moveableObject {
    y = 90;
    energy = 100;
 
-   offsetX = 50;
-   offsetY = 50;
-   offsetWidth = -100;
-   offsetHeight = -100;
+   offset = {
+      top: 100,
+      left: 30,
+      right: 40,
+      bottom: 30,
+   };
 
    IMAGES_WALKING = [
       './img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -45,6 +47,7 @@ class Endboss extends moveableObject {
    isMovingBecauseOfAttack = false;
    animationInterval;
    moveLeftInterval;
+   hasHit = false;
 
    constructor() {
       super().loadImage(this.IMAGES_WALKING[0]);
@@ -67,6 +70,7 @@ class Endboss extends moveableObject {
       this.energy -= 20;
       console.log(this.energy);
       if (this.energy <= 0) {
+         this.energy = 0;
          this.playDeadAnimation();
       } else {
          this.playAttackAnimation();
@@ -96,16 +100,4 @@ class Endboss extends moveableObject {
          }
       }, 200);
    }
-
-   //   playHurtAnimation() {
-   //     let hurtIndex = 0;
-   //     const hurtInterval = setInterval(() => {
-   //       if (hurtIndex < this.IMAGES_HURT.length) {
-   //         this.loadImage(this.IMAGES_HURT[hurtIndex]);
-   //         hurtIndex++;
-   //       } else {
-   //         clearInterval(hurtInterval); // Stop the dead animation
-   //       }
-   //     }, 1000);
-   //   }
 }

@@ -10,6 +10,7 @@ class World {
    coinsStatusBar = new CoinsStatusBar();
    bottles = new Bottles();
    endbossStatusBar = new EndbossStatusBar();
+   throwableObject = new ThrowableObject();
    throwableObjects = [];
 
    // constructor: eine Funktion, die immer ausgeführt wird, wenn eine neue Instanz der Klasse erstellt wird
@@ -34,7 +35,6 @@ class World {
          this.hitEnemyWithBottle();
          this.collectBottles();
          this.collectCoins(); // Neue Methode aufrufen
-         setInterval;
       }, 100);
    }
 
@@ -82,9 +82,10 @@ class World {
    hitEnemyWithBottle() {
       this.throwableObjects.forEach((bottle, bottleIndex) => {
          this.level.enemies.forEach((enemy) => {
-            if (bottle.isColliding(enemy) && !enemy.dead) {
+            if (!bottle.hasHit && bottle.isColliding(enemy) && !enemy.dead) {
                enemy.getsHitByBottle();
-               this.throwableObjects.splice(bottleIndex, 1);
+               bottle.bottleSplashAnimation();
+               bottle.hasHit = true;
                if (enemy instanceof Endboss) {
                   this.endbossStatusBar.getsHit();
                }
