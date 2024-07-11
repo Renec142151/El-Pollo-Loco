@@ -80,7 +80,7 @@ class World {
    }
 
    hitEnemyWithBottle() {
-      this.throwableObjects.forEach((bottle, bottleIndex) => {
+      this.throwableObjects.forEach((bottle) => {
          this.level.enemies.forEach((enemy) => {
             if (!bottle.hasHit && bottle.isColliding(enemy) && !enemy.dead) {
                enemy.getsHitByBottle();
