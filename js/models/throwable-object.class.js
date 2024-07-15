@@ -18,9 +18,11 @@ class ThrowableObject extends moveableObject {
    throwAnimationInterval;
    splashAnimationInterval;
    hasHit = false;
+   isCharacterOtherDirection = false;
 
-   constructor(x, y) {
+   constructor(x, y, isCharacterOtherDirection) {
       super().loadImage('./img/7_statusbars/3_icons/icon_salsa_bottle.png');
+      this.isCharacterOtherDirection = isCharacterOtherDirection;
       this.loadImages(this.BOTTLE_ROTATION);
       this.loadImages(this.BOTTLE_SPLASH);
       this.x = x;
@@ -34,8 +36,11 @@ class ThrowableObject extends moveableObject {
       this.applyGravity();
       this.throwAnimation();
       setInterval(() => {
-         this.x += 10;
-         0;
+         if (this.isCharacterOtherDirection) {
+            this.x -= 10;
+         } else {
+            this.x += 10;
+         }
       }, 25);
    }
 

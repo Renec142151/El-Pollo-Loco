@@ -2,8 +2,163 @@ body {
    display: flex;
    flex-direction: column;
    align-items: center;
+   justify-content: flex-start;
+   height: 100vh;
+   margin: 0;
+   background-image: url(./img/background/desert.png);
+   font-family: 'PlaywriteESDeco', 'Arial', 'Helvetica';
+   /* margin-top: 50px; */
+}
+
+@font-face {
+   font-family: 'PlaywriteESDeco';
+   src: url(./fonts/PlaywriteESDeco-VariableFont_wght.ttf) format('truetype');
 }
 
 canvas {
    background-color: black;
+   /* border: solid 5px rgb(255, 177, 60); */
+   border-radius: 10px;
+   box-shadow: 12px 10px 5px black;
+   display: block;
+}
+
+h1 {
+   font-size: 64px;
+   text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.info-bar {
+   display: flex;
+   gap: 50px;
+   height: 120px;
+   justify-content: center;
+   align-items: center;
+}
+
+.sound-control {
+   width: 50px;
+   background-color: rgb(247, 194, 116);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border-radius: 10px;
+   border: solid 1px black;
+   box-shadow: 12px 10px 5px black;
+   padding: 10px;
+   cursor: pointer;
+}
+
+.info-bar-buttons {
+   background-color: rgb(247, 194, 116);
+   width: 167px;
+   display: flex;
+   justify-content: center;
+   height: 50px;
+   align-items: center;
+   border-radius: 10px;
+   font-size: 18px;
+   font-weight: bold;
+   border: solid 1px black;
+   box-shadow: 12px 10px 5px black;
+   cursor: pointer;
+}
+
+.info-bar-buttons:hover {
+   background-color: rgb(255, 177, 60);
+}
+
+.sound-control:hover {
+   background-color: rgb(255, 177, 60);
+}
+
+.start-screen {
+   position: absolute;
+   top: 0;
+}
+
+.start-screen img {
+   width: 900px;
+   height: 480px;
+   border-radius: 10px;
+}
+#fullscreen {
+   position: relative;
+}
+
+#winScreen {
+   position: absolute;
+   border-radius: 10px;
+   top: 38%;
+   left: 30%;
+   display: none;
+}
+
+#winScreen img {
+   width: 65%;
+}
+
+#gameOver {
+   background-image: url(./img/9_intro_outro_screens/game_over/game_over.png);
+   background-position: center;
+   background-size: cover;
+   position: absolute;
+   border-radius: 10px;
+   top: 0;
+   bottom: 0;
+   right: 0;
+   left: 0;
+   display: none;
+}
+
+.restart-button {
+   background-color: rgb(247, 194, 116);
+   width: 198px;
+   display: flex;
+   justify-content: center;
+   height: 62px;
+   align-items: center;
+   border-radius: 10px;
+   font-size: 31px;
+   font-weight: bold;
+   border: solid 1px black;
+   box-shadow: 12px 10px 5px black;
+   cursor: pointer;
+   position: absolute;
+   bottom: 30px;
+   left: 38%;
+   animation: pulse 1s infinite;
+   display: none;
+}
+
+@media only screen and (max-width: 900px) {
+   canvas {
+      width: 100%;
+   }
+
+   .info-bar {
+      display: none;
+   }
+
+   h1 {
+      display: none;
+   }
+}
+
+@media only screen and (max-height: 480px) {
+   canvas {
+      height: 100vh;
+   }
+}
+
+@keyframes pulse {
+   0% {
+      transform: scale(1);
+   }
+   50% {
+      transform: scale(1.2);
+   }
+   100% {
+      transform: scale(1);
+   }
 }

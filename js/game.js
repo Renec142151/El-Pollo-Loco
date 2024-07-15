@@ -3,6 +3,8 @@ let world;
 let keyboard = new Keyboard();
 
 function init(params) {
+   document.getElementById('startScreen').style.display = `none`;
+   initLevel(params);
    canvas = document.getElementById('canvas');
    world = new World(canvas, keyboard);
 }
@@ -10,10 +12,13 @@ function init(params) {
 document.addEventListener('keydown', (event) => {
    if (event.keyCode == 39) {
       keyboard.RIGHT = true;
+      // world.moveableObject.otherDirection = false;
    }
    if (event.keyCode == 37) {
       keyboard.LEFT = true;
+      // world.moveableObject.otherDirection = true;
    }
+
    if (event.keyCode == 38) {
       keyboard.UP = true;
    }

@@ -1,6 +1,7 @@
 class World {
    level = level1;
    character = new Character();
+   // endboss = new Endboss();
    canvas;
    ctx;
    keyboard;
@@ -11,7 +12,9 @@ class World {
    bottles = new Bottles();
    endbossStatusBar = new EndbossStatusBar();
    throwableObject = new ThrowableObject();
+   moveableObject = new moveableObject();
    throwableObjects = [];
+   freezeGame = false;
 
    // constructor: eine Funktion, die immer ausgeführt wird, wenn eine neue Instanz der Klasse erstellt wird
    constructor(canvas) {
@@ -26,6 +29,7 @@ class World {
 
    setWorld() {
       this.character.world = this;
+      this.level.enemies.forEach((enemy) => (enemy.world = this)); // Hier wird die world-Eigenschaft für jeden enemy gesetzt
    }
 
    run() {
@@ -58,10 +62,17 @@ class World {
 
    checkThrowObjects() {
       if (this.keyboard.D && !this.bottlesStatusBar.collectedBottles <= 0) {
-         let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
-         this.throwableObjects.push(bottle);
-         this.bottlesStatusBar.collectedBottles--;
-         this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10); // Passt den Wert der Bottle StatusBar an
+         if (this.character.otherDirection) {
+            let bottle = new ThrowableObject(this.character.x - 100, this.character.y + 100, this.character.otherDirection);
+            this.throwableObjects.push(bottle);
+            this.bottlesStatusBar.collectedBottles--;
+            this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10);
+         } else {
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this.character.otherDirection);
+            this.throwableObjects.push(bottle);
+            this.bottlesStatusBar.collectedBottles--;
+            this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10); // Passt den Wert der Bottle StatusBar an}
+         }
       }
    }
 
@@ -70,7 +81,6 @@ class World {
          if (this.character.isColliding(enemy) && !enemy.dead) {
             if (this.character.isAboveGround() && this.character.speedY < 0) {
                enemy.getsHitByCharacter();
-               this.character.jump();
             } else {
                this.character.hit();
                this.statusBar.setPercentage(this.character.energy);
@@ -119,8 +129,11 @@ class World {
 
       //   The requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser call a specified function to update an animation before the next repaint.
       let self = this;
-      requestAnimationFrame(function () {
-         self.draw();
+      requestAnimationFrame(() => {
+         if (this.freezeGame) {
+            return;
+         }
+         this.draw();
       });
    }
 

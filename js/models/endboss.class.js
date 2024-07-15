@@ -43,7 +43,7 @@ class Endboss extends moveableObject {
       './img/4_enemie_boss_chicken/4_hurt/G22.png',
       './img/4_enemie_boss_chicken/4_hurt/G23.png',
    ];
-
+   world;
    isMovingBecauseOfAttack = false;
    animationInterval;
    moveLeftInterval;
@@ -72,6 +72,11 @@ class Endboss extends moveableObject {
       if (this.energy <= 0) {
          this.energy = 0;
          this.playDeadAnimation();
+         setTimeout(() => {
+            this.world.freezeGame = true;
+            document.getElementById('winScreen').style.display = 'flex';
+            document.getElementById('restartButton').style.display = 'flex';
+         }, 600);
       } else {
          this.playAttackAnimation();
       }
@@ -96,7 +101,7 @@ class Endboss extends moveableObject {
             this.loadImage(this.IMAGES_DEAD[deadIndex]);
             deadIndex++;
          } else {
-            clearInterval(deadInterval); // Stop the dead animation
+            clearInterval(deadInterval);
          }
       }, 200);
    }

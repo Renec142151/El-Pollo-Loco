@@ -84,19 +84,22 @@ class Character extends moveableObject {
       }, 1000 / 60);
 
       setInterval(() => {
-         if (this.isDead() && !this.deathAnimationPlayed) {
+         if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
-            this.deathAnimationPlayed = true;
+            setTimeout(() => {
+               this.world.freezeGame = true;
+               document.getElementById('gameOver').style.display = 'flex';
+               document.getElementById('restartButton').style.display = 'flex';
+            }, 600);
          } else if (this.isHurt()) {
             this.playAnimation(this.IMAGES_HURT);
          } else if (this.isAboveGround()) {
             this.playAnimation(this.IMAGES_JUMPING);
          } else {
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-               // Walk animation
                this.playAnimation(this.IMAGES_WALKING);
             }
          }
-      }, 70);
+      }, 100);
    }
 }
