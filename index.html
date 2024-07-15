@@ -29,17 +29,32 @@
    <body>
       <h1>El Pollo Loco</h1>
       <div id="fullscreen">
-         <canvas id="canvas" width="900" height="480"> </canvas>
-         <div id="startScreen" class="start-screen"><img src="./img/9_intro_outro_screens/start/startscreen_1.png" alt="" /></div>
+         <div id="touchElements" class="touch-elements">
+            <div class="left-touch-elements">
+               <img id="touch-move-left" src="./img/touchElements/arrow_left.svg" alt="" />
+               <img id="touch-move-right" src="./img/touchElements/arrow_right.svg" alt="" />
+            </div>
+            <div class="right-touch-elements">
+               <img id="touch-jump" class="jump-touch" src="./img/touchElements/arrow_jump.svg" alt="" />
+               <img id="touch-attack" class="touch-bottle" src="./img/touchElements/attack.png" alt="" />
+            </div>
+         </div>
+         <canvas id="canvas" width="900" height="480"></canvas>
+         <div id="startScreen" class="start-screen">
+            <img id="startImage" src="./img/9_intro_outro_screens/start/startscreen_1.png" alt="" />
+         </div>
+         <div onclick="init()" id="startButton" class="info-bar-buttons">Start Game</div>
          <div id="winScreen"><img src="./img/9_intro_outro_screens/win/win_1.png" alt="" /></div>
          <div id="gameOver"></div>
          <div onclick="location.reload()" id="restartButton" class="restart-button">Restart</div>
       </div>
 
       <div class="info-bar">
+         <div id="fullscreenButton" class="info-bar-buttons" onclick="toggleFullscreen()">Fullscreen</div>
          <div class="info-bar-buttons">Controls</div>
          <div><img class="sound-control" src="./img/startscreen/mute.svg" alt="" /></div>
-         <div onclick="init()" id="startButton" class="info-bar-buttons">Start Game</div>
       </div>
+
+      <div id="rotateMessage" class="rotate-message">Please rotate your device to landscape mode.</div>
    </body>
 </html>
