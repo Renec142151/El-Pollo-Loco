@@ -13,17 +13,45 @@ function init(params) {
 }
 
 function addTouchEventListeners() {
-   document.getElementById('touch-move-left').addEventListener('touchstart', () => (keyboard.LEFT = true));
-   document.getElementById('touch-move-left').addEventListener('touchend', () => (keyboard.LEFT = false));
+   document.getElementById('touch-move-left').addEventListener('touchstart', (event) => {
+      event.preventDefault();
+      keyboard.LEFT = true;
+   });
 
-   document.getElementById('touch-move-right').addEventListener('touchstart', () => (keyboard.RIGHT = true));
-   document.getElementById('touch-move-right').addEventListener('touchend', () => (keyboard.RIGHT = false));
+   document.getElementById('touch-move-left').addEventListener('touchend', (event) => {
+      event.preventDefault();
+      keyboard.LEFT = false;
+   });
 
-   document.getElementById('touch-jump').addEventListener('touchstart', () => (keyboard.SPACE = true));
-   document.getElementById('touch-jump').addEventListener('touchend', () => (keyboard.SPACE = false));
+   document.getElementById('touch-move-right').addEventListener('touchstart', (event) => {
+      event.preventDefault();
+      keyboard.RIGHT = true;
+   });
 
-   document.getElementById('touch-attack').addEventListener('touchstart', () => (keyboard.D = true));
-   document.getElementById('touch-attack').addEventListener('touchend', () => (keyboard.D = false));
+   document.getElementById('touch-move-right').addEventListener('touchend', (event) => {
+      event.preventDefault();
+      keyboard.RIGHT = false;
+   });
+
+   document.getElementById('touch-jump').addEventListener('touchstart', (event) => {
+      event.preventDefault();
+      keyboard.SPACE = true;
+   });
+
+   document.getElementById('touch-jump').addEventListener('touchend', (event) => {
+      event.preventDefault();
+      keyboard.SPACE = false;
+   });
+
+   document.getElementById('touch-attack').addEventListener('touchstart', (event) => {
+      event.preventDefault();
+      keyboard.D = true;
+   });
+
+   document.getElementById('touch-attack').addEventListener('touchend', (event) => {
+      event.preventDefault();
+      keyboard.D = false;
+   });
 }
 
 document.addEventListener('keydown', (event) => {
