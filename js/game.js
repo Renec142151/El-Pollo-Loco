@@ -195,3 +195,13 @@ function toggleMuteTouch() {
       soundControlTouch.src = unmutedImage;
    }
 }
+
+function showControls() {
+   const controlsDialog = document.getElementById('controlsDialog');
+   controlsDialog.showModal();
+}
+
+function closeControls() {
+   const controlsDialog = document.getElementById('controlsDialog');
+   controlsDialog.close();
+}

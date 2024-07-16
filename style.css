@@ -222,6 +222,63 @@ h1 {
    margin: 10px;
 }
 
+.dialog-content {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   padding: 20px;
+   background: white;
+   border-radius: 10px;
+   text-align: center;
+   background-color: rgb(247, 194, 116);
+}
+
+dialog::backdrop {
+   background: rgba(0, 0, 0, 0.5);
+}
+
+dialog {
+   border: none;
+   border-radius: 10px;
+   padding: 0;
+}
+
+button {
+   background-color: #333;
+   color: white;
+   border: none;
+   padding: 10px 20px;
+   margin-top: 20px;
+   cursor: pointer;
+   border-radius: 5px;
+}
+
+button:hover {
+   background-color: #555;
+}
+
+ul {
+   list-style-type: none;
+   padding: 0;
+}
+
+ul li {
+   margin: 10px 0;
+}
+
+ul img {
+   width: 30px;
+   vertical-align: middle;
+   margin-left: 10px;
+}
+
+kbd {
+   border-radius: 2px;
+   padding: 2px;
+   border: 1px solid black;
+}
+
 @media only screen and (max-width: 900px) {
    canvas {
       width: 100vw;

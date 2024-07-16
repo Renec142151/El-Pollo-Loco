@@ -62,7 +62,7 @@
 
       <div class="info-bar">
          <div id="fullscreenButton" class="info-bar-buttons" onclick="toggleFullscreen()">Fullscreen</div>
-         <div class="info-bar-buttons">Controls</div>
+         <div id="controls" class="info-bar-buttons" onclick="showControls()">Controls</div>
          <div>
             <img
                onclick="toggleMute()"
@@ -74,5 +74,26 @@
       </div>
 
       <div id="rotateMessage" class="rotate-message">Please rotate your device to landscape mode.</div>
+
+      <dialog id="controlsDialog">
+         <div class="dialog-content">
+            <h2>Game Controls</h2>
+            <p><strong>Keyboard:</strong></p>
+            <ul>
+               <li>Move Left: <kbd>←</kbd></li>
+               <li>Move Right: <kbd>→</kbd></li>
+               <li>Jump: <kbd>Space</kbd></li>
+               <li>Attack: <kbd>D</kbd></li>
+            </ul>
+            <p><strong>Touch Controls:</strong></p>
+            <ul>
+               <li>Move Left: <img src="./img/touchElements/arrow_left.svg" alt="Move Left Icon" /></li>
+               <li>Move Right: <img src="./img/touchElements/arrow_right.svg" alt="Move Right Icon" /></li>
+               <li>Jump: <img src="./img/touchElements/arrow_jump.svg" alt="Jump Icon" /></li>
+               <li>Attack: <img src="./img/touchElements/attack.png" alt="Attack Icon" /></li>
+            </ul>
+            <button onclick="closeControls()">Close</button>
+         </div>
+      </dialog>
    </body>
 </html>
