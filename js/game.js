@@ -102,17 +102,17 @@ function toggleFullscreen() {
 
 function checkOrientation() {
    const rotateMessage = document.getElementById('rotateMessage');
-   const canvas = document.getElementById('canvas');
-   const touchElements = document.getElementById('touchElements');
+   const canvas = document.getElementById('fullscreen');
+   const startScreen = document.getElementById('startScreen');
 
    if (window.innerWidth <= 900 && window.innerHeight > window.innerWidth) {
       rotateMessage.style.display = 'flex';
       canvas.style.display = 'none';
-      // touchElements.style.display = 'none'; // Versteckt die Touch-Elemente im Hochformat
+      startScreen.style.display = 'none';
    } else {
       rotateMessage.style.display = 'none';
       canvas.style.display = 'block';
-      // touchElements.style.display = 'flex';
+      startScreen.style.display = 'flex';
    }
 }
 
@@ -123,9 +123,12 @@ document.addEventListener('DOMContentLoaded', () => {
    checkOrientation();
    document.addEventListener('fullscreenchange', () => {
       const canvas = document.getElementById('canvas');
+      const startImage = document.getElementById('startImage');
       if (document.fullscreenElement) {
          canvas.style.width = '100vw';
          canvas.style.height = '100vh';
+         startImage.style.width = '100vw';
+         startImage.style.height = '100vh';
       } else {
          canvas.style.width = '900px';
          canvas.style.height = '480px';
