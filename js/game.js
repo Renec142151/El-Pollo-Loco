@@ -9,6 +9,7 @@ function init(params) {
    canvas = document.getElementById('canvas');
    world = new World(canvas, keyboard);
    addTouchEventListeners();
+   // backgroundMusic.play();
 }
 
 function addTouchEventListeners() {
@@ -131,3 +132,35 @@ document.addEventListener('DOMContentLoaded', () => {
       }
    });
 });
+
+function toggleMute() {
+   const soundControl = document.getElementById('soundControl');
+   const mutedImage = './img/startscreen/mute.svg';
+   const unmutedImage = './img/startscreen/volume_up.svg';
+
+   allSounds.forEach((sound) => {
+      sound.muted = !sound.muted;
+   });
+
+   if (!allSounds[0].muted) {
+      soundControl.src = mutedImage;
+   } else {
+      soundControl.src = unmutedImage;
+   }
+}
+
+function toggleMuteTouch() {
+   const soundControlTouch = document.getElementById('soundControlTouch');
+   const mutedImage = './img/startscreen/mute.svg';
+   const unmutedImage = './img/startscreen/volume_up.svg';
+
+   allSounds.forEach((sound) => {
+      sound.muted = !sound.muted;
+   });
+
+   if (!allSounds[0].muted) {
+      soundControlTouch.src = mutedImage;
+   } else {
+      soundControlTouch.src = unmutedImage;
+   }
+}

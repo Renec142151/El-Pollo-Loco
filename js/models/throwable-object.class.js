@@ -51,6 +51,7 @@ class ThrowableObject extends moveableObject {
    }
 
    bottleSplashAnimation() {
+      splashGlassSound.play();
       clearInterval(this.throwAnimationInterval);
       let splashFrameIndex = 0;
       this.splashAnimationInterval = setInterval(() => {
@@ -60,6 +61,6 @@ class ThrowableObject extends moveableObject {
          } else {
             clearInterval(this.splashAnimationInterval);
          }
-      }, 300);
+      }, 80);
    }
 }

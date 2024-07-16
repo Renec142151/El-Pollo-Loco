@@ -1,7 +1,6 @@
 class World {
    level = level1;
    character = new Character();
-   // endboss = new Endboss();
    canvas;
    ctx;
    keyboard;
@@ -23,8 +22,8 @@ class World {
       this.keyboard = keyboard;
       this.draw();
       this.setWorld();
-      this.checkCollisions();
       this.run();
+      this.checkThrowObjects();
    }
 
    setWorld() {
@@ -35,16 +34,16 @@ class World {
    run() {
       setInterval(() => {
          this.checkCollisions();
-         this.checkThrowObjects();
          this.hitEnemyWithBottle();
          this.collectBottles();
-         this.collectCoins(); // Neue Methode aufrufen
-      }, 100);
+         this.collectCoins();
+      }, 50);
    }
 
    collectBottles() {
       this.level.bottles.forEach((bottle, index) => {
          if (this.character.isColliding(bottle)) {
+            bottleCollect.play();
             this.level.bottles.splice(index, 1); // Entfernt die Bottle aus dem Array
             this.bottlesStatusBar.collectBottle();
          }
@@ -54,6 +53,7 @@ class World {
    collectCoins() {
       this.level.coins.forEach((coin, index) => {
          if (this.character.isColliding(coin)) {
+            coinsCollect.play();
             this.level.coins.splice(index, 1);
             this.coinsStatusBar.collectCoin();
          }
@@ -61,19 +61,21 @@ class World {
    }
 
    checkThrowObjects() {
-      if (this.keyboard.D && !this.bottlesStatusBar.collectedBottles <= 0) {
-         if (this.character.otherDirection) {
-            let bottle = new ThrowableObject(this.character.x - 100, this.character.y + 100, this.character.otherDirection);
-            this.throwableObjects.push(bottle);
-            this.bottlesStatusBar.collectedBottles--;
-            this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10);
-         } else {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this.character.otherDirection);
-            this.throwableObjects.push(bottle);
-            this.bottlesStatusBar.collectedBottles--;
-            this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10); // Passt den Wert der Bottle StatusBar an}
+      setInterval(() => {
+         if (this.keyboard.D && !this.bottlesStatusBar.collectedBottles <= 0) {
+            if (this.character.otherDirection) {
+               let bottle = new ThrowableObject(this.character.x - 100, this.character.y + 100, this.character.otherDirection);
+               this.throwableObjects.push(bottle);
+               this.bottlesStatusBar.collectedBottles--;
+               this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10);
+            } else {
+               let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this.character.otherDirection);
+               this.throwableObjects.push(bottle);
+               this.bottlesStatusBar.collectedBottles--;
+               this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10); // Passt den Wert der Bottle StatusBar an}
+            }
          }
-      }
+      }, 100);
    }
 
    checkCollisions() {

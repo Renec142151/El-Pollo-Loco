@@ -168,9 +168,10 @@ h1 {
    bottom: 0;
    left: 0;
    right: 0;
-   height: 68px;
-   justify-content: space-between;
    align-items: center;
+   flex-direction: column;
+   justify-content: space-between;
+   height: 100%;
 }
 
 .touch-elements img {
@@ -202,6 +203,24 @@ h1 {
 
 .jump-touch {
    height: 48px;
+}
+
+.bottom-touch-elements {
+   display: flex;
+   justify-content: space-between;
+   width: 100%;
+   margin-bottom: 10px;
+}
+
+.top-touch-elements {
+   display: flex;
+   justify-content: flex-end;
+   width: 100%;
+}
+
+.touch-mute {
+   height: 52px;
+   margin: 10px;
 }
 
 @media only screen and (max-width: 900px) {

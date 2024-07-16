@@ -20,7 +20,7 @@ class Chicken extends moveableObject {
    constructor() {
       super().loadImage(this.IMAGES_WALKING[0]);
       this.loadImages(this.IMAGES_WALKING);
-      this.x = 500 + Math.random() * 500;
+      this.x = 500 + Math.random() * 2000;
       this.speed = 0.15 + Math.random() * 0.5;
       this.animate();
    }
@@ -36,7 +36,6 @@ class Chicken extends moveableObject {
 
    getsHitByBottle() {
       this.energy -= 5;
-      console.log(this.energy);
       if (this.energy <= 0) {
          this.chickenIsDead();
       }
@@ -53,6 +52,7 @@ class Chicken extends moveableObject {
       clearInterval(this.walkingInterval);
       clearInterval(this.animationInterval);
       this.loadImage(this.IMAGE_DEAD);
+      chickenDeadSound.play();
       this.dead = true;
    }
 }

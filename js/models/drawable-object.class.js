@@ -24,7 +24,8 @@ class DrawableObject {
          this instanceof Chicken ||
          this instanceof Endboss ||
          this instanceof Bottles ||
-         this instanceof Coins
+         this instanceof Coins ||
+         this instanceof SmallChicken
       ) {
          ctx.beginPath();
          ctx.lineWidth = '1';

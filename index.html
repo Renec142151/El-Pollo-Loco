@@ -10,6 +10,7 @@
       <script src="./js/models/endboss.class.js"></script>
       <script src="./js/models/coins.class.js"></script>
       <script src="./js/models/chicken.class.js"></script>
+      <script src="./js/models/small-chicken.class.js"></script>
       <script src="./js/models/clouds.class.js"></script>
       <script src="./js/models/bottles.class.js"></script>
       <script src="./js/models/bottles-status-bar.class.js"></script>
@@ -21,7 +22,7 @@
       <script src="./js/models/keyboard.class.js"></script>
       <script src="./js/models/level.class.js"></script>
       <script src="./js/models/throwable-object.class.js"></script>
-
+      <script src="./js/models/audiofiles.js"></script>
       <script src="./js/levels/level1.js"></script>
       <script src="./js/game.js"></script>
       <title>Document</title>
@@ -30,13 +31,23 @@
       <h1>El Pollo Loco</h1>
       <div id="fullscreen">
          <div id="touchElements" class="touch-elements">
-            <div class="left-touch-elements">
-               <img id="touch-move-left" src="./img/touchElements/arrow_left.svg" alt="" />
-               <img id="touch-move-right" src="./img/touchElements/arrow_right.svg" alt="" />
+            <div class="top-touch-elements">
+               <img
+                  onclick="toggleMuteTouch()"
+                  id="soundControlTouch"
+                  class="touch-mute"
+                  src="./img/startscreen/mute.svg"
+                  alt="" />
             </div>
-            <div class="right-touch-elements">
-               <img id="touch-jump" class="jump-touch" src="./img/touchElements/arrow_jump.svg" alt="" />
-               <img id="touch-attack" class="touch-bottle" src="./img/touchElements/attack.png" alt="" />
+            <div class="bottom-touch-elements">
+               <div class="left-touch-elements">
+                  <img id="touch-move-left" src="./img/touchElements/arrow_left.svg" alt="" />
+                  <img id="touch-move-right" src="./img/touchElements/arrow_right.svg" alt="" />
+               </div>
+               <div class="right-touch-elements">
+                  <img id="touch-jump" class="jump-touch" src="./img/touchElements/arrow_jump.svg" alt="" />
+                  <img id="touch-attack" class="touch-bottle" src="./img/touchElements/attack.png" alt="" />
+               </div>
             </div>
          </div>
          <canvas id="canvas" width="900" height="480"></canvas>
@@ -52,7 +63,14 @@
       <div class="info-bar">
          <div id="fullscreenButton" class="info-bar-buttons" onclick="toggleFullscreen()">Fullscreen</div>
          <div class="info-bar-buttons">Controls</div>
-         <div><img class="sound-control" src="./img/startscreen/mute.svg" alt="" /></div>
+         <div>
+            <img
+               onclick="toggleMute()"
+               id="soundControl"
+               class="sound-control"
+               src="./img/startscreen/mute.svg"
+               alt="Sound Control" />
+         </div>
       </div>
 
       <div id="rotateMessage" class="rotate-message">Please rotate your device to landscape mode.</div>

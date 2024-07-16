@@ -104,5 +104,7 @@ class Endboss extends moveableObject {
             clearInterval(deadInterval);
          }
       }, 200);
+      backgroundMusic.pause();
+      winning.play();
    }
 }

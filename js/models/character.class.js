@@ -2,10 +2,11 @@ class Character extends moveableObject {
    height = 300;
    width = 150;
    y = 155;
-   x = 120;
+   x = 0;
    speed = 6;
    energy = 100;
    lastMovementTime = Date.now();
+   deathAnimationPlayed = false;
 
    offset = {
       top: 120,
@@ -76,10 +77,6 @@ class Character extends moveableObject {
       './img/2_character_pepe/1_idle/long_idle/I-20.png',
    ];
 
-   world;
-   walking_sound = new Audio('audio/walking.mp3');
-   deathAnimationPlayed = false;
-
    constructor() {
       super().loadImage('./img/2_character_pepe/2_walk/W-21.png');
       this.loadImages(this.IMAGES_WALKING);
@@ -94,21 +91,23 @@ class Character extends moveableObject {
 
    animate() {
       setInterval(() => {
-         this.walking_sound.pause();
+         walkingSound.pause();
          if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.otherDirection = false;
             this.moveRight();
+            walkingSound.play();
             this.lastMovementTime = Date.now();
          }
          if (this.world.keyboard.LEFT && this.x > 0) {
             this.moveLeft();
             this.otherDirection = true;
-            this.walking_sound.play();
+            walkingSound.play();
             this.lastMovementTime = Date.now();
          }
 
          if (this.world.keyboard.SPACE && !this.isAboveGround()) {
             this.jump();
+            jumpSound.play();
             this.lastMovementTime = Date.now();
          }
 
@@ -116,7 +115,13 @@ class Character extends moveableObject {
       }, 1000 / 60);
 
       setInterval(() => {
+         sleep.pause();
          if (this.isDead()) {
+            if (!this.deathAnimationPlayed) {
+               backgroundMusic.pause();
+               dead.play();
+               this.deathAnimationPlayed = true;
+            }
             this.playAnimation(this.IMAGES_DEAD);
             setTimeout(() => {
                this.world.freezeGame = true;
@@ -124,12 +129,14 @@ class Character extends moveableObject {
                document.getElementById('restartButton').style.display = 'flex';
             }, 600);
          } else if (this.isHurt()) {
+            hurt.play();
             this.playAnimation(this.IMAGES_HURT);
          } else if (this.isAboveGround()) {
             this.playAnimation(this.IMAGES_JUMPING);
          } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
             this.playAnimation(this.IMAGES_WALKING);
          } else if (Date.now() - this.lastMovementTime > 5000) {
+            sleep.play();
             this.playAnimation(this.IMAGES_SLEEP);
          } else {
             this.playAnimation(this.IMAGES_IDLE);
