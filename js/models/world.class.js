@@ -1,21 +1,85 @@
+/**
+ * Represents the game world, including the level, character, status bars, and game logic.
+ */
 class World {
+   /**
+    * The current level of the game.
+    * @type {Level}
+    */
    level = level1;
+
+   /**
+    * The main character of the game.
+    * @type {Character}
+    */
    character = new Character();
+
+   /**
+    * The canvas element used for rendering the game.
+    * @type {HTMLCanvasElement}
+    */
    canvas;
+
+   /**
+    * The 2D rendering context for the canvas.
+    * @type {CanvasRenderingContext2D}
+    */
    ctx;
+
+   /**
+    * The keyboard object for tracking user input.
+    * @type {Keyboard}
+    */
    keyboard;
+
+   /**
+    * The x-coordinate of the camera, used for scrolling.
+    * @type {number}
+    * @default 0
+    */
    camera_x = 0;
+
+   /**
+    * The status bar for displaying the number of bottles collected.
+    * @type {BottlesStatusBar}
+    */
    bottlesStatusBar = new BottlesStatusBar();
+
+   /**
+    * The status bar for displaying the character's health.
+    * @type {StatusBar}
+    */
    statusBar = new StatusBar();
+
+   /**
+    * The status bar for displaying the number of coins collected.
+    * @type {CoinsStatusBar}
+    */
    coinsStatusBar = new CoinsStatusBar();
-   bottles = new Bottles();
+
+   /**
+    * The status bar for displaying the endboss's health.
+    * @type {EndbossStatusBar}
+    */
    endbossStatusBar = new EndbossStatusBar();
-   throwableObject = new ThrowableObject();
-   moveableObject = new moveableObject();
+
+   /**
+    * A collection of throwable objects in the game.
+    * @type {ThrowableObject[]}
+    */
    throwableObjects = [];
+
+   /**
+    * A flag indicating whether the game is frozen or not.
+    * @type {boolean}
+    * @default false
+    */
    freezeGame = false;
 
-   // constructor: eine Funktion, die immer ausgeführt wird, wenn eine neue Instanz der Klasse erstellt wird
+   /**
+    * Creates an instance of the World class.
+    * @param {HTMLCanvasElement} canvas - The canvas element used for rendering the game.
+    */
    constructor(canvas) {
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
@@ -26,11 +90,19 @@ class World {
       this.checkThrowObjects();
    }
 
+   /**
+    * Sets the world for the character and the enemies.
+    * This method assigns the current world instance to the character and all enemies.
+    */
    setWorld() {
       this.character.world = this;
-      this.level.enemies.forEach((enemy) => (enemy.world = this)); // Hier wird die world-Eigenschaft für jeden enemy gesetzt
+      this.level.enemies.forEach((enemy) => (enemy.world = this));
    }
 
+   /**
+    * Starts the game loop that checks collisions, handles bottle throws, and collects items.
+    * Runs every 50 milliseconds.
+    */
    run() {
       setInterval(() => {
          this.checkCollisions();
@@ -40,26 +112,35 @@ class World {
       }, 50);
    }
 
+   /**
+    * Checks if the character collects any bottles and updates the bottles status bar.
+    */
    collectBottles() {
       this.level.bottles.forEach((bottle, index) => {
          if (this.character.isColliding(bottle)) {
             bottleCollect.play();
-            this.level.bottles.splice(index, 1); // Entfernt die Bottle aus dem Array
+            this.level.bottles.splice(index, 1); // Remove the bottle from the level
             this.bottlesStatusBar.collectBottle();
          }
       });
    }
 
+   /**
+    * Checks if the character collects any coins and updates the coins status bar.
+    */
    collectCoins() {
       this.level.coins.forEach((coin, index) => {
          if (this.character.isColliding(coin)) {
             coinsCollect.play();
-            this.level.coins.splice(index, 1);
+            this.level.coins.splice(index, 1); // Remove the coin from the level
             this.coinsStatusBar.collectCoin();
          }
       });
    }
 
+   /**
+    * Checks for throw objects and creates a new ThrowableObject if the throw button is pressed.
+    */
    checkThrowObjects() {
       setInterval(() => {
          if (this.keyboard.D && !this.bottlesStatusBar.collectedBottles <= 0) {
@@ -72,12 +153,16 @@ class World {
                let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this.character.otherDirection);
                this.throwableObjects.push(bottle);
                this.bottlesStatusBar.collectedBottles--;
-               this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10); // Passt den Wert der Bottle StatusBar an}
+               this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10);
             }
          }
       }, 100);
    }
 
+   /**
+    * Checks for collisions between the character and enemies.
+    * Handles character hits by enemies and updates the status bar.
+    */
    checkCollisions() {
       this.level.enemies.forEach((enemy) => {
          if (this.character.isColliding(enemy) && !enemy.dead) {
@@ -91,6 +176,9 @@ class World {
       });
    }
 
+   /**
+    * Checks if any throwable objects collide with enemies and handles the collision.
+    */
    hitEnemyWithBottle() {
       this.throwableObjects.forEach((bottle) => {
          this.level.enemies.forEach((enemy) => {
@@ -106,6 +194,10 @@ class World {
       });
    }
 
+   /**
+    * Draws all elements of the world onto the canvas.
+    * The method handles translation for camera movement and updates the rendering.
+    */
    draw() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -117,7 +209,7 @@ class World {
       this.addToMap(this.statusBar);
       this.addToMap(this.coinsStatusBar);
       this.addToMap(this.endbossStatusBar);
-      this.ctx.translate(this.camera_x, 0); // Forwards
+      this.ctx.translate(this.camera_x, 0); // FORWARDS
 
       this.addToMap(this.character);
 
@@ -129,7 +221,7 @@ class World {
 
       this.ctx.translate(-this.camera_x, 0);
 
-      //   The requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser call a specified function to update an animation before the next repaint.
+      // Request the next animation frame to continue drawing the world
       let self = this;
       requestAnimationFrame(() => {
          if (this.freezeGame) {
@@ -139,18 +231,25 @@ class World {
       });
    }
 
+   /**
+    * Adds an array of objects to the map.
+    * @param {DrawableObject[]} objects - An array of objects to be drawn on the canvas.
+    */
    addObjectsToMap(objects) {
       objects.forEach((object) => {
          this.addToMap(object);
       });
    }
 
+   /**
+    * Adds a single object to the map.
+    * @param {DrawableObject} moveableObject - The object to be drawn on the canvas.
+    */
    addToMap(moveableObject) {
       if (moveableObject.otherDirection) {
          this.flipImage(moveableObject);
       }
       moveableObject.draw(this.ctx);
-
       moveableObject.drawFrame(this.ctx);
 
       if (moveableObject.otherDirection) {
@@ -158,6 +257,10 @@ class World {
       }
    }
 
+   /**
+    * Flips the image horizontally for objects facing the other direction.
+    * @param {moveableObject} moveableObject - The object whose image is to be flipped.
+    */
    flipImage(moveableObject) {
       this.ctx.save();
       this.ctx.translate(moveableObject.width, 0);
@@ -165,6 +268,10 @@ class World {
       moveableObject.x = moveableObject.x * -1;
    }
 
+   /**
+    * Reverts the image flip done by `flipImage`.
+    * @param {moveableObject} moveableObject - The object whose image flip is to be reverted.
+    */
    flipImageBack(moveableObject) {
       moveableObject.x = moveableObject.x * -1;
       this.ctx.restore();

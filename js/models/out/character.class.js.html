@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: character.class.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: character.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents the main character in the game.
+ * @extends moveableObject
+ */
+class Character extends moveableObject {
+   /**
+    * The height of the character.
+    * @type {number}
+    * @default 300
+    */
+   height = 300;
+
+   /**
+    * The width of the character.
+    * @type {number}
+    * @default 150
+    */
+   width = 150;
+
+   /**
+    * The y-coordinate of the character.
+    * @type {number}
+    * @default 155
+    */
+   y = 155;
+
+   /**
+    * The x-coordinate of the character.
+    * @type {number}
+    * @default 0
+    */
+   x = 0;
+
+   /**
+    * The speed of the character.
+    * @type {number}
+    * @default 6
+    */
+   speed = 6;
+
+   /**
+    * The energy of the character.
+    * @type {number}
+    * @default 100
+    */
+   energy = 100;
+
+   /**
+    * The timestamp of the last movement of the character.
+    * @type {number}
+    * @default Date.now()
+    */
+   lastMovementTime = Date.now();
+
+   /**
+    * Flag to check if the death animation has been played.
+    * @type {boolean}
+    * @default false
+    */
+   deathAnimationPlayed = false;
+
+   /**
+    * The offset values for the character.
+    * @type {Object}
+    * @property {number} top - The top offset.
+    * @property {number} left - The left offset.
+    * @property {number} right - The right offset.
+    * @property {number} bottom - The bottom offset.
+    */
+   offset = {
+      top: 120,
+      left: 30,
+      right: 40,
+      bottom: 10,
+   };
+
+   /**
+    * An array of image paths for the walking animation.
+    * @type {string[]}
+    */
+   IMAGES_WALKING = [
+      './img/2_character_pepe/2_walk/W-21.png',
+      './img/2_character_pepe/2_walk/W-22.png',
+      './img/2_character_pepe/2_walk/W-23.png',
+      './img/2_character_pepe/2_walk/W-24.png',
+      './img/2_character_pepe/2_walk/W-25.png',
+      './img/2_character_pepe/2_walk/W-26.png',
+   ];
+
+   /**
+    * An array of image paths for the jumping animation.
+    * @type {string[]}
+    */
+   IMAGES_JUMPING = [
+      './img/2_character_pepe/3_jump/J-31.png',
+      './img/2_character_pepe/3_jump/J-32.png',
+      './img/2_character_pepe/3_jump/J-33.png',
+      './img/2_character_pepe/3_jump/J-34.png',
+      './img/2_character_pepe/3_jump/J-35.png',
+      './img/2_character_pepe/3_jump/J-36.png',
+      './img/2_character_pepe/3_jump/J-37.png',
+      './img/2_character_pepe/3_jump/J-38.png',
+      './img/2_character_pepe/3_jump/J-39.png',
+   ];
+
+   /**
+    * An array of image paths for the dead animation.
+    * @type {string[]}
+    */
+   IMAGES_DEAD = [
+      './img/2_character_pepe/5_dead/D-51.png',
+      './img/2_character_pepe/5_dead/D-52.png',
+      './img/2_character_pepe/5_dead/D-53.png',
+      './img/2_character_pepe/5_dead/D-54.png',
+      './img/2_character_pepe/5_dead/D-55.png',
+      './img/2_character_pepe/5_dead/D-56.png',
+      './img/2_character_pepe/5_dead/D-57.png',
+   ];
+
+   /**
+    * An array of image paths for the hurt animation.
+    * @type {string[]}
+    */
+   IMAGES_HURT = [
+      './img/2_character_pepe/4_hurt/H-41.png',
+      './img/2_character_pepe/4_hurt/H-42.png',
+      './img/2_character_pepe/4_hurt/H-43.png',
+   ];
+
+   /**
+    * An array of image paths for the idle animation.
+    * @type {string[]}
+    */
+   IMAGES_IDLE = [
+      './img/2_character_pepe/1_idle/idle/I-1.png',
+      './img/2_character_pepe/1_idle/idle/I-2.png',
+      './img/2_character_pepe/1_idle/idle/I-3.png',
+      './img/2_character_pepe/1_idle/idle/I-4.png',
+      './img/2_character_pepe/1_idle/idle/I-5.png',
+      './img/2_character_pepe/1_idle/idle/I-6.png',
+      './img/2_character_pepe/1_idle/idle/I-7.png',
+      './img/2_character_pepe/1_idle/idle/I-8.png',
+      './img/2_character_pepe/1_idle/idle/I-9.png',
+      './img/2_character_pepe/1_idle/idle/I-10.png',
+   ];
+
+   /**
+    * An array of image paths for the sleep animation.
+    * @type {string[]}
+    */
+   IMAGES_SLEEP = [
+      './img/2_character_pepe/1_idle/long_idle/I-11.png',
+      './img/2_character_pepe/1_idle/long_idle/I-12.png',
+      './img/2_character_pepe/1_idle/long_idle/I-13.png',
+      './img/2_character_pepe/1_idle/long_idle/I-14.png',
+      './img/2_character_pepe/1_idle/long_idle/I-15.png',
+      './img/2_character_pepe/1_idle/long_idle/I-16.png',
+      './img/2_character_pepe/1_idle/long_idle/I-17.png',
+      './img/2_character_pepe/1_idle/long_idle/I-18.png',
+      './img/2_character_pepe/1_idle/long_idle/I-19.png',
+      './img/2_character_pepe/1_idle/long_idle/I-20.png',
+   ];
+
+   /**
+    * Creates an instance of Character.
+    */
+   constructor() {
+      super().loadImage('./img/2_character_pepe/2_walk/W-21.png');
+      this.loadImages(this.IMAGES_WALKING);
+      this.loadImages(this.IMAGES_JUMPING);
+      this.loadImages(this.IMAGES_DEAD);
+      this.loadImages(this.IMAGES_HURT);
+      this.loadImages(this.IMAGES_IDLE);
+      this.loadImages(this.IMAGES_SLEEP);
+      this.applyGravity();
+      this.animate();
+   }
+
+   /**
+    * Animates the character based on keyboard input and character state.
+    */
+   animate() {
+      setInterval(() => {
+         walkingSound.pause();
+         if (this.world.keyboard.RIGHT &amp;&amp; this.x &lt; this.world.level.level_end_x) {
+            this.otherDirection = false;
+            this.moveRight();
+            walkingSound.play();
+            this.lastMovementTime = Date.now();
+         }
+         if (this.world.keyboard.LEFT &amp;&amp; this.x > 0) {
+            this.moveLeft();
+            this.otherDirection = true;
+            walkingSound.play();
+            this.lastMovementTime = Date.now();
+         }
+
+         if (this.world.keyboard.SPACE &amp;&amp; !this.isAboveGround()) {
+            this.jump();
+            jumpSound.play();
+            this.lastMovementTime = Date.now();
+         }
+
+         this.world.camera_x = -this.x + 200;
+      }, 1000 / 60);
+
+      setInterval(() => {
+         sleep.pause();
+         if (this.isDead()) {
+            if (!this.deathAnimationPlayed) {
+               backgroundMusic.pause();
+               dead.play();
+               this.deathAnimationPlayed = true;
+            }
+            this.playAnimation(this.IMAGES_DEAD);
+            setTimeout(() => {
+               this.world.freezeGame = true;
+               document.getElementById('gameOver').style.display = 'flex';
+               document.getElementById('restartButton').style.display = 'flex';
+            }, 600);
+         } else if (this.isHurt()) {
+            hurt.play();
+            this.playAnimation(this.IMAGES_HURT);
+         } else if (this.isAboveGround()) {
+            this.playAnimation(this.IMAGES_JUMPING);
+         } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+            this.playAnimation(this.IMAGES_WALKING);
+         } else if (Date.now() - this.lastMovementTime > 5000) {
+            sleep.play();
+            this.playAnimation(this.IMAGES_SLEEP);
+         } else {
+            this.playAnimation(this.IMAGES_IDLE);
+         }
+      }, 200);
+   }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bottles.html">Bottles</a></li><li><a href="BottlesStatusBar.html">BottlesStatusBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Clouds.html">Clouds</a></li><li><a href="Coins.html">Coins</a></li><li><a href="CoinsStatusBar.html">CoinsStatusBar</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="EndbossStatusBar.html">EndbossStatusBar</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="SmallChicken.html">SmallChicken</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li><li><a href="moveableObject.html">moveableObject</a></li></ul><h3>Global</h3><ul><li><a href="global.html#allSounds">allSounds</a></li><li><a href="global.html#backgroundMusic">backgroundMusic</a></li><li><a href="global.html#bottleCollect">bottleCollect</a></li><li><a href="global.html#chickenDeadSound">chickenDeadSound</a></li><li><a href="global.html#coinsCollect">coinsCollect</a></li><li><a href="global.html#dead">dead</a></li><li><a href="global.html#hurt">hurt</a></li><li><a href="global.html#jumpSound">jumpSound</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#smallChickenDeadSound">smallChickenDeadSound</a></li><li><a href="global.html#splashGlassSound">splashGlassSound</a></li><li><a href="global.html#throwSound">throwSound</a></li><li><a href="global.html#walkingSound">walkingSound</a></li><li><a href="global.html#winning">winning</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Jul 16 2024 23:52:58 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

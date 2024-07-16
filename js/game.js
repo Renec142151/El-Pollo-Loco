@@ -1,18 +1,41 @@
+/**
+ * Das Canvas-Element für die Spielanzeige.
+ * @type {HTMLCanvasElement}
+ */
 let canvas;
+
+/**
+ * Die Instanz der World-Klasse, die die Spielwelt darstellt.
+ * @type {World}
+ */
 let world;
+
+/**
+ * Das Keyboard-Objekt zur Überwachung der Benutzereingaben.
+ * @type {Keyboard}
+ */
 let keyboard = new Keyboard();
 
+/**
+ * Initialisiert das Spiel und versteckt den Startbildschirm.
+ * Erstellt eine neue Instanz der World-Klasse und fügt Touch-Event-Listener hinzu.
+ * @param {Object} params - Parameter für das Level.
+ */
 function init(params) {
    document.getElementById('startScreen').style.display = `none`;
    document.getElementById('startButton').style.display = `none`;
    initLevel(params);
    canvas = document.getElementById('canvas');
-   world = new World(canvas, keyboard);
+   world = new World(canvas, keyboard); // Übergibt das Keyboard-Objekt an die World-Klasse
    addTouchEventListeners();
-   // backgroundMusic.play();
+   backgroundMusic.play(); // Startet die Hintergrundmusik
 }
 
+/**
+ * Fügt Touch-Event-Listener für die Steuerung des Spiels hinzu.
+ */
 function addTouchEventListeners() {
+   // Fügt Event-Listener für die Steuerung nach links hinzu
    document.getElementById('touch-move-left').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.LEFT = true;
@@ -23,6 +46,7 @@ function addTouchEventListeners() {
       keyboard.LEFT = false;
    });
 
+   // Fügt Event-Listener für die Steuerung nach rechts hinzu
    document.getElementById('touch-move-right').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.RIGHT = true;
@@ -33,6 +57,7 @@ function addTouchEventListeners() {
       keyboard.RIGHT = false;
    });
 
+   // Fügt Event-Listener für das Springen hinzu
    document.getElementById('touch-jump').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.SPACE = true;
@@ -43,6 +68,7 @@ function addTouchEventListeners() {
       keyboard.SPACE = false;
    });
 
+   // Fügt Event-Listener für den Angriff hinzu
    document.getElementById('touch-attack').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.D = true;
@@ -54,49 +80,58 @@ function addTouchEventListeners() {
    });
 }
 
+/**
+ * Verarbeitet die Tasteneingaben für das Spiel.
+ */
 document.addEventListener('keydown', (event) => {
-   if (event.keyCode == 39) {
-      keyboard.RIGHT = true;
-   }
-   if (event.keyCode == 37) {
-      keyboard.LEFT = true;
-   }
-
-   if (event.keyCode == 38) {
-      keyboard.UP = true;
-   }
-   if (event.keyCode == 40) {
-      keyboard.DOWN = true;
-   }
-   if (event.keyCode == 32) {
-      keyboard.SPACE = true;
-   }
-   if (event.keyCode == 68) {
-      keyboard.D = true;
+   switch (event.keyCode) {
+      case 39: // Pfeiltaste nach rechts
+         keyboard.RIGHT = true;
+         break;
+      case 37: // Pfeiltaste nach links
+         keyboard.LEFT = true;
+         break;
+      case 38: // Pfeiltaste nach oben
+         keyboard.UP = true;
+         break;
+      case 40: // Pfeiltaste nach unten
+         keyboard.DOWN = true;
+         break;
+      case 32: // Leertaste
+         keyboard.SPACE = true;
+         break;
+      case 68: // 'D' für Angriff
+         keyboard.D = true;
+         break;
    }
 });
 
 document.addEventListener('keyup', (event) => {
-   if (event.keyCode == 39) {
-      keyboard.RIGHT = false;
-   }
-   if (event.keyCode == 37) {
-      keyboard.LEFT = false;
-   }
-   if (event.keyCode == 38) {
-      keyboard.UP = false;
-   }
-   if (event.keyCode == 40) {
-      keyboard.DOWN = false;
-   }
-   if (event.keyCode == 32) {
-      keyboard.SPACE = false;
-   }
-   if (event.keyCode == 68) {
-      keyboard.D = false;
+   switch (event.keyCode) {
+      case 39: // Pfeiltaste nach rechts
+         keyboard.RIGHT = false;
+         break;
+      case 37: // Pfeiltaste nach links
+         keyboard.LEFT = false;
+         break;
+      case 38: // Pfeiltaste nach oben
+         keyboard.UP = false;
+         break;
+      case 40: // Pfeiltaste nach unten
+         keyboard.DOWN = false;
+         break;
+      case 32: // Leertaste
+         keyboard.SPACE = false;
+         break;
+      case 68: // 'D' für Angriff
+         keyboard.D = false;
+         break;
    }
 });
 
+/**
+ * Schaltet den Vollbildmodus ein oder aus.
+ */
 function toggleFullscreen() {
    const fullscreenElement = document.getElementById('fullscreen');
    if (!document.fullscreenElement) {
@@ -106,7 +141,7 @@ function toggleFullscreen() {
          // Firefox
          fullscreenElement.mozRequestFullScreen();
       } else if (fullscreenElement.webkitRequestFullscreen) {
-         // Chrome, Safari and Opera
+         // Chrome, Safari und Opera
          fullscreenElement.webkitRequestFullscreen();
       } else if (fullscreenElement.msRequestFullscreen) {
          // IE/Edge
@@ -119,7 +154,7 @@ function toggleFullscreen() {
          // Firefox
          document.mozCancelFullScreen();
       } else if (document.webkitExitFullscreen) {
-         // Chrome, Safari and Opera
+         // Chrome, Safari und Opera
          document.webkitExitFullscreen();
       } else if (document.msExitFullscreen) {
          // IE/Edge
@@ -128,6 +163,9 @@ function toggleFullscreen() {
    }
 }
 
+/**
+ * Überprüft die Bildschirmorientierung und zeigt eine entsprechende Nachricht an, wenn das Gerät im Hochformat ist.
+ */
 function checkOrientation() {
    const rotateMessage = document.getElementById('rotateMessage');
    const canvas = document.getElementById('fullscreen');
@@ -164,6 +202,9 @@ document.addEventListener('DOMContentLoaded', () => {
    });
 });
 
+/**
+ * Schaltet die Ton-Mute-Funktion um und ändert das Symbol entsprechend.
+ */
 function toggleMute() {
    const soundControl = document.getElementById('soundControl');
    const mutedImage = './img/startscreen/mute.svg';
@@ -180,6 +221,9 @@ function toggleMute() {
    }
 }
 
+/**
+ * Schaltet die Ton-Mute-Funktion für die Touch-Steuerung um und ändert das Symbol entsprechend.
+ */
 function toggleMuteTouch() {
    const soundControlTouch = document.getElementById('soundControlTouch');
    const mutedImage = './img/startscreen/mute.svg';
@@ -196,11 +240,17 @@ function toggleMuteTouch() {
    }
 }
 
+/**
+ * Zeigt das Steuerungsdialogfeld an.
+ */
 function showControls() {
    const controlsDialog = document.getElementById('controlsDialog');
    controlsDialog.showModal();
 }
 
+/**
+ * Schließt das Steuerungsdialogfeld.
+ */
 function closeControls() {
    const controlsDialog = document.getElementById('controlsDialog');
    controlsDialog.close();
