@@ -41,7 +41,7 @@ class BottlesStatusBar extends DrawableObject {
     */
    collectBottle() {
       this.collectedBottles += 1;
-      this.setPercentage(this.collectedBottles * 10);
+      this.setPercentage(this.collectedBottles * 5);
    }
 
    /**

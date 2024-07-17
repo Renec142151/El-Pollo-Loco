@@ -56,6 +56,6 @@ class Bottles extends DrawableObject {
        * The x-coordinate of the bottle, randomly set within a specific range.
        * @type {number}
        */
-      this.x = 300 + Math.random() * 2000;
+      this.x = 300 + Math.random() * 1800;
    }
 }

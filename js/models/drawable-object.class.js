@@ -49,33 +49,6 @@ class DrawableObject {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
    }
 
-   // /**
-   //  * Draws a frame around the object if it's an instance of specific classes.
-   //  * For debugging purposes, a blue rectangle is drawn around the object.
-   //  * @param {CanvasRenderingContext2D} ctx - The 2D drawing context of the canvas.
-   //  */
-   // drawFrame(ctx) {
-   //    if (
-   //       this instanceof Character ||
-   //       this instanceof Chicken ||
-   //       this instanceof Endboss ||
-   //       this instanceof Bottles ||
-   //       this instanceof Coins ||
-   //       this instanceof SmallChicken
-   //    ) {
-   //       ctx.beginPath();
-   //       ctx.lineWidth = '1';
-   //       ctx.strokeStyle = 'blue';
-   //       ctx.rect(
-   //          this.x + this.offset.left,
-   //          this.y + this.offset.top,
-   //          this.width - this.offset.right - this.offset.left,
-   //          this.height - this.offset.bottom - this.offset.top
-   //       );
-   //       ctx.stroke();
-   //    }
-   // }
-
    /**
     * Loads multiple images and stores them in the image cache.
     * @param {string[]} array - An array of image file paths.

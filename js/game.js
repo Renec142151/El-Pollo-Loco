@@ -1,41 +1,41 @@
 /**
- * Das Canvas-Element für die Spielanzeige.
+ * The canvas element for the game display.
  * @type {HTMLCanvasElement}
  */
 let canvas;
 
 /**
- * Die Instanz der World-Klasse, die die Spielwelt darstellt.
+ * The instance of the World class representing the game world.
  * @type {World}
  */
 let world;
 
 /**
- * Das Keyboard-Objekt zur Überwachung der Benutzereingaben.
+ * The Keyboard object to monitor user inputs.
  * @type {Keyboard}
  */
 let keyboard = new Keyboard();
 
 /**
- * Initialisiert das Spiel und versteckt den Startbildschirm.
- * Erstellt eine neue Instanz der World-Klasse und fügt Touch-Event-Listener hinzu.
- * @param {Object} params - Parameter für das Level.
+ * Initializes the game and hides the start screen.
+ * Creates a new instance of the World class and adds touch event listeners.
+ * @param {Object} params - Parameters for the level.
  */
 function init(params) {
    document.getElementById('startScreen').style.display = `none`;
    document.getElementById('startButton').style.display = `none`;
    initLevel(params);
    canvas = document.getElementById('canvas');
-   world = new World(canvas, keyboard); // Übergibt das Keyboard-Objekt an die World-Klasse
+   world = new World(canvas, keyboard); // Passes the Keyboard object to the World class
    addTouchEventListeners();
-   backgroundMusic.play(); // Startet die Hintergrundmusik
+   backgroundMusic.play(); // Starts background music
 }
 
 /**
- * Fügt Touch-Event-Listener für die Steuerung des Spiels hinzu.
+ * Adds touch event listeners for game controls.
  */
 function addTouchEventListeners() {
-   // Fügt Event-Listener für die Steuerung nach links hinzu
+   // Adds event listeners for moving left
    document.getElementById('touch-move-left').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.LEFT = true;
@@ -46,7 +46,7 @@ function addTouchEventListeners() {
       keyboard.LEFT = false;
    });
 
-   // Fügt Event-Listener für die Steuerung nach rechts hinzu
+   // Adds event listeners for moving right
    document.getElementById('touch-move-right').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.RIGHT = true;
@@ -57,7 +57,7 @@ function addTouchEventListeners() {
       keyboard.RIGHT = false;
    });
 
-   // Fügt Event-Listener für das Springen hinzu
+   // Adds event listeners for jumping
    document.getElementById('touch-jump').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.SPACE = true;
@@ -68,7 +68,7 @@ function addTouchEventListeners() {
       keyboard.SPACE = false;
    });
 
-   // Fügt Event-Listener für den Angriff hinzu
+   // Adds event listeners for attacking
    document.getElementById('touch-attack').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.D = true;
@@ -81,26 +81,26 @@ function addTouchEventListeners() {
 }
 
 /**
- * Verarbeitet die Tasteneingaben für das Spiel.
+ * Handles keyboard inputs for the game.
  */
 document.addEventListener('keydown', (event) => {
    switch (event.keyCode) {
-      case 39: // Pfeiltaste nach rechts
+      case 39: // Right arrow key
          keyboard.RIGHT = true;
          break;
-      case 37: // Pfeiltaste nach links
+      case 37: // Left arrow key
          keyboard.LEFT = true;
          break;
-      case 38: // Pfeiltaste nach oben
+      case 38: // Up arrow key
          keyboard.UP = true;
          break;
-      case 40: // Pfeiltaste nach unten
+      case 40: // Down arrow key
          keyboard.DOWN = true;
          break;
-      case 32: // Leertaste
+      case 32: // Space key
          keyboard.SPACE = true;
          break;
-      case 68: // 'D' für Angriff
+      case 68: // 'D' key for attack
          keyboard.D = true;
          break;
    }
@@ -108,29 +108,29 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keyup', (event) => {
    switch (event.keyCode) {
-      case 39: // Pfeiltaste nach rechts
+      case 39: // Right arrow key
          keyboard.RIGHT = false;
          break;
-      case 37: // Pfeiltaste nach links
+      case 37: // Left arrow key
          keyboard.LEFT = false;
          break;
-      case 38: // Pfeiltaste nach oben
+      case 38: // Up arrow key
          keyboard.UP = false;
          break;
-      case 40: // Pfeiltaste nach unten
+      case 40: // Down arrow key
          keyboard.DOWN = false;
          break;
-      case 32: // Leertaste
+      case 32: // Space key
          keyboard.SPACE = false;
          break;
-      case 68: // 'D' für Angriff
+      case 68: // 'D' key for attack
          keyboard.D = false;
          break;
    }
 });
 
 /**
- * Schaltet den Vollbildmodus ein oder aus.
+ * Toggles the fullscreen mode on or off.
  */
 function toggleFullscreen() {
    const fullscreenElement = document.getElementById('fullscreen');
@@ -141,7 +141,7 @@ function toggleFullscreen() {
          // Firefox
          fullscreenElement.mozRequestFullScreen();
       } else if (fullscreenElement.webkitRequestFullscreen) {
-         // Chrome, Safari und Opera
+         // Chrome, Safari and Opera
          fullscreenElement.webkitRequestFullscreen();
       } else if (fullscreenElement.msRequestFullscreen) {
          // IE/Edge
@@ -154,7 +154,7 @@ function toggleFullscreen() {
          // Firefox
          document.mozCancelFullScreen();
       } else if (document.webkitExitFullscreen) {
-         // Chrome, Safari und Opera
+         // Chrome, Safari and Opera
          document.webkitExitFullscreen();
       } else if (document.msExitFullscreen) {
          // IE/Edge
@@ -164,7 +164,7 @@ function toggleFullscreen() {
 }
 
 /**
- * Überprüft die Bildschirmorientierung und zeigt eine entsprechende Nachricht an, wenn das Gerät im Hochformat ist.
+ * Checks the screen orientation and displays a corresponding message if the device is in portrait mode.
  */
 function checkOrientation() {
    const rotateMessage = document.getElementById('rotateMessage');
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Schaltet die Ton-Mute-Funktion um und ändert das Symbol entsprechend.
+ * Toggles the mute function for the sound and changes the icon accordingly.
  */
 function toggleMute() {
    const soundControl = document.getElementById('soundControl');
@@ -224,7 +224,7 @@ function toggleMute() {
 }
 
 /**
- * Schaltet die Ton-Mute-Funktion für die Touch-Steuerung um und ändert das Symbol entsprechend.
+ * Toggles the mute function for the sound in touch controls and changes the icon accordingly.
  */
 function toggleMuteTouch() {
    const soundControlTouch = document.getElementById('soundControlTouch');
@@ -243,7 +243,7 @@ function toggleMuteTouch() {
 }
 
 /**
- * Zeigt das Steuerungsdialogfeld an.
+ * Displays the controls dialog.
  */
 function showControls() {
    const controlsDialog = document.getElementById('controlsDialog');
@@ -251,7 +251,7 @@ function showControls() {
 }
 
 /**
- * Schließt das Steuerungsdialogfeld.
+ * Closes the controls dialog.
  */
 function closeControls() {
    const controlsDialog = document.getElementById('controlsDialog');
