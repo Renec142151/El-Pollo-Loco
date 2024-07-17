@@ -177,60 +177,125 @@ class Character extends moveableObject {
    }
 
    /**
-    * Animates the character based on keyboard input and character state.
+    * Starts the animation loop for the character.
     */
    animate() {
+      this.setupMovementInterval();
+      this.setupAnimationInterval();
+   }
+
+   /**
+    * Sets up the movement interval.
+    */
+   setupMovementInterval() {
       setInterval(() => {
-         walkingSound.pause();
-         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-            this.otherDirection = false;
-            this.moveRight();
-            walkingSound.play();
-            this.lastMovementTime = Date.now();
-         }
-         if (this.world.keyboard.LEFT && this.x > 0) {
-            this.moveLeft();
-            this.otherDirection = true;
-            walkingSound.play();
-            this.lastMovementTime = Date.now();
-         }
-
-         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-            this.jump();
-            jumpSound.play();
-            this.lastMovementTime = Date.now();
-         }
-
-         this.world.camera_x = -this.x + 200;
+         this.handleMovement();
+         this.updateCameraPosition();
       }, 1000 / 60);
+   }
 
+   /**
+    * Sets up the animation interval.
+    */
+   setupAnimationInterval() {
       setInterval(() => {
-         sleep.pause();
-         if (this.isDead()) {
-            if (!this.deathAnimationPlayed) {
-               backgroundMusic.pause();
-               dead.play();
-               this.deathAnimationPlayed = true;
-            }
-            this.playAnimation(this.IMAGES_DEAD);
-            setTimeout(() => {
-               this.world.freezeGame = true;
-               document.getElementById('gameOver').style.display = 'flex';
-               document.getElementById('restartButton').style.display = 'flex';
-            }, 600);
-         } else if (this.isHurt()) {
-            hurt.play();
-            this.playAnimation(this.IMAGES_HURT);
-         } else if (this.isAboveGround()) {
-            this.playAnimation(this.IMAGES_JUMPING);
-         } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-            this.playAnimation(this.IMAGES_WALKING);
-         } else if (Date.now() - this.lastMovementTime > 5000) {
-            sleep.play();
-            this.playAnimation(this.IMAGES_SLEEP);
-         } else {
-            this.playAnimation(this.IMAGES_IDLE);
-         }
+         this.handleAnimation();
       }, 200);
+   }
+
+   /**
+    * Handles character movement based on keyboard input.
+    */
+   handleMovement() {
+      walkingSound.pause();
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+         this.moveRight();
+         this.otherDirection = false;
+         this.playWalkingSound();
+      }
+      if (this.world.keyboard.LEFT && this.x > 0) {
+         this.moveLeft();
+         this.otherDirection = true;
+         this.playWalkingSound();
+      }
+      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+         this.jump();
+         this.playJumpSound();
+      }
+      this.lastMovementTime = Date.now();
+   }
+
+   /**
+    * Plays the walking sound.
+    */
+   playWalkingSound() {
+      walkingSound.play();
+   }
+
+   /**
+    * Plays the jump sound.
+    */
+   playJumpSound() {
+      jumpSound.play();
+   }
+
+   /**
+    * Updates the camera position based on the character's position.
+    */
+   updateCameraPosition() {
+      this.world.camera_x = -this.x + 200;
+   }
+
+   /**
+    * Handles the character's animation based on the current state.
+    */
+   handleAnimation() {
+      sleep.pause();
+      if (this.isDead()) {
+         this.handleDeathAnimation();
+      } else if (this.isHurt()) {
+         this.handleHurtAnimation();
+      } else if (this.isAboveGround()) {
+         this.playAnimation(this.IMAGES_JUMPING);
+      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+         this.playAnimation(this.IMAGES_WALKING);
+      } else if (Date.now() - this.lastMovementTime > 5000) {
+         this.playSleepAnimation();
+      } else {
+         this.playAnimation(this.IMAGES_IDLE);
+      }
+   }
+
+   /**
+    * Handles the death animation and game over state.
+    */
+   handleDeathAnimation() {
+      if (!this.deathAnimationPlayed) {
+         backgroundMusic.pause();
+         dead.play();
+         this.deathAnimationPlayed = true;
+      }
+      this.playAnimation(this.IMAGES_DEAD);
+      setTimeout(() => {
+         this.world.freezeGame = true;
+         document.getElementById('gameOver').style.display = 'flex';
+         document.getElementById('restartButton').style.display = 'flex';
+      }, 600);
+   }
+
+   /**
+    * Handles the hurt animation.
+    */
+   handleHurtAnimation() {
+      hurt.play();
+      this.playAnimation(this.IMAGES_HURT);
+   }
+
+   /**
+    * Plays the sleep animation and sound.
+    */
+   playSleepAnimation() {
+      sleep.play();
+      this.playAnimation(this.IMAGES_SLEEP);
    }
 }

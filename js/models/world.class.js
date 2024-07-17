@@ -156,7 +156,8 @@ class World {
     */
    checkThrowObjects() {
       setInterval(() => {
-         if (this.keyboard.D && !this.bottlesStatusBar.collectedBottles <= 0) {
+         if (bottleThrown && this.keyboard.D && !this.bottlesStatusBar.collectedBottles <= 0) {
+            bottleThrown = false;
             if (this.character.otherDirection) {
                let bottle = new ThrowableObject(this.character.x - 100, this.character.y + 100, this.character.otherDirection);
                this.throwableObjects.push(bottle);

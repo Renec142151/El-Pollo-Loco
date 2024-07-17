@@ -16,6 +16,8 @@ let world;
  */
 let keyboard = new Keyboard();
 
+let bottleThrown = false;
+
 /**
  * Initializes the game and hides the start screen.
  * Creates a new instance of the World class and adds touch event listeners.
@@ -77,6 +79,7 @@ function addTouchEventListeners() {
    document.getElementById('touch-attack').addEventListener('touchend', (event) => {
       event.preventDefault();
       keyboard.D = false;
+      bottleThrown = true;
    });
 }
 
@@ -125,41 +128,61 @@ document.addEventListener('keyup', (event) => {
          break;
       case 68: // 'D' key for attack
          keyboard.D = false;
+         bottleThrown = true;
          break;
    }
 });
 
 /**
- * Toggles the fullscreen mode on or off.
+ * Requests the browser to enter fullscreen mode for the given element.
+ * Handles different browser implementations.
+ * @param {Element} element - The DOM element to be displayed in fullscreen mode.
+ */
+function requestFullscreen(element) {
+   if (element.requestFullscreen) {
+      element.requestFullscreen();
+   } else if (element.mozRequestFullScreen) {
+      // Firefox
+      element.mozRequestFullScreen();
+   } else if (element.webkitRequestFullscreen) {
+      // Chrome, Safari, and Opera
+      element.webkitRequestFullscreen();
+   } else if (element.msRequestFullscreen) {
+      // IE/Edge
+      element.msRequestFullscreen();
+   }
+}
+
+/**
+ * Requests the browser to exit fullscreen mode.
+ * Handles different browser implementations.
+ */
+function exitFullscreen() {
+   if (document.exitFullscreen) {
+      document.exitFullscreen();
+   } else if (document.mozCancelFullScreen) {
+      // Firefox
+      document.mozCancelFullScreen();
+   } else if (document.webkitExitFullscreen) {
+      // Chrome, Safari, and Opera
+      document.webkitExitFullscreen();
+   } else if (document.msExitFullscreen) {
+      // IE/Edge
+      document.msExitFullscreen();
+   }
+}
+
+/**
+ * Toggles fullscreen mode for the element with the ID 'fullscreen'.
+ * If the browser is not in fullscreen mode, it requests fullscreen for the element.
+ * If the browser is in fullscreen mode, it requests to exit fullscreen.
  */
 function toggleFullscreen() {
    const fullscreenElement = document.getElementById('fullscreen');
    if (!document.fullscreenElement) {
-      if (fullscreenElement.requestFullscreen) {
-         fullscreenElement.requestFullscreen();
-      } else if (fullscreenElement.mozRequestFullScreen) {
-         // Firefox
-         fullscreenElement.mozRequestFullScreen();
-      } else if (fullscreenElement.webkitRequestFullscreen) {
-         // Chrome, Safari and Opera
-         fullscreenElement.webkitRequestFullscreen();
-      } else if (fullscreenElement.msRequestFullscreen) {
-         // IE/Edge
-         fullscreenElement.msRequestFullscreen();
-      }
+      requestFullscreen(fullscreenElement);
    } else {
-      if (document.exitFullscreen) {
-         document.exitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-         // Firefox
-         document.mozCancelFullScreen();
-      } else if (document.webkitExitFullscreen) {
-         // Chrome, Safari and Opera
-         document.webkitExitFullscreen();
-      } else if (document.msExitFullscreen) {
-         // IE/Edge
-         document.msExitFullscreen();
-      }
+      exitFullscreen();
    }
 }
 
@@ -169,16 +192,13 @@ function toggleFullscreen() {
 function checkOrientation() {
    const rotateMessage = document.getElementById('rotateMessage');
    const canvas = document.getElementById('fullscreen');
-   const startScreen = document.getElementById('startScreen');
 
-   if (window.innerWidth <= 900 && window.innerHeight > window.innerWidth) {
+   if (window.innerWidth <= 930 && window.innerHeight > window.innerWidth) {
       rotateMessage.style.display = 'flex';
       canvas.style.display = 'none';
-      startScreen.style.display = 'none';
    } else {
       rotateMessage.style.display = 'none';
       canvas.style.display = 'block';
-      startScreen.style.display = 'flex';
    }
 }
 

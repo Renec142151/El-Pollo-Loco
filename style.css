@@ -7,7 +7,7 @@ body {
    margin: 0;
    background-image: url(./img/background/desert.png);
    font-family: 'PlaywriteESDeco', 'Arial', 'Helvetica';
-   /* margin-top: 50px; */
+   background-size: cover;
 }
 
 @font-face {
@@ -284,7 +284,7 @@ kbd {
    font-size: 20px;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 930px) {
    canvas {
       width: 100vw;
    }
