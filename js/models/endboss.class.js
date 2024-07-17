@@ -204,7 +204,7 @@ class Endboss extends moveableObject {
          winning.play();
          document.getElementById('winScreen').style.display = 'flex';
          document.getElementById('restartButton').style.display = 'flex';
-      }, 900);
+      }, 800);
    }
    /**
     * Plays the hurt animation for the character.
