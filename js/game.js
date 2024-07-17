@@ -198,6 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
          canvas.style.width = '900px';
          canvas.style.height = '480px';
+         startImage.style.width = '900px';
+         startImage.style.height = '480px';
       }
    });
 });

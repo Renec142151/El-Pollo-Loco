@@ -146,8 +146,12 @@ class World {
       this.level.coins.forEach((coin, index) => {
          if (this.character.isColliding(coin)) {
             coinsCollect.play();
-            this.level.coins.splice(index, 1); // Remove the coin from the level
+            this.level.coins.splice(index, 1);
             this.coinsStatusBar.collectCoin();
+            if (this.coinsStatusBar.collectedCoins === 10) {
+               this.bottlesStatusBar.collectedBottles += 5;
+               this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10);
+            }
          }
       });
    }

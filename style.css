@@ -279,6 +279,11 @@ kbd {
    border: 1px solid black;
 }
 
+.coins-info-text {
+   padding: 5px;
+   font-size: 20px;
+}
+
 @media only screen and (max-width: 900px) {
    canvas {
       width: 100vw;
