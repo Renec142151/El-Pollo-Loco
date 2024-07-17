@@ -100,11 +100,25 @@ class World {
    }
 
    /**
+    * Pausiert das Spiel, indem alle wichtigen Spielprozesse angehalten werden.
+    */
+   pauseGame() {
+      this.freezeGame = true;
+      // Stoppe alle laufenden Spielintervalle oder Animationen
+      clearInterval(this.gameInterval);
+      clearInterval(this.throwInterval);
+      // Stoppe alle laufenden Sounds
+      // allSounds.forEach((sound) => {
+      //    sound.pause();
+      // });
+   }
+
+   /**
     * Starts the game loop that checks collisions, handles bottle throws, and collects items.
     * Runs every 50 milliseconds.
     */
    run() {
-      setInterval(() => {
+      this.gameInterval = setInterval(() => {
          this.checkCollisions();
          this.hitEnemyWithBottle();
          this.collectBottles();

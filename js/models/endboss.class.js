@@ -116,6 +116,8 @@ class Endboss extends moveableObject {
     */
    animationInterval;
 
+   attackInterval;
+
    /**
     * Interval ID for the endboss's movement during an attack.
     * @type {number}
@@ -165,13 +167,8 @@ class Endboss extends moveableObject {
       if (this.energy <= 0) {
          this.energy = 0;
          this.playDeadAnimation();
-         setTimeout(() => {
-            this.world.freezeGame = true;
-            document.getElementById('winScreen').style.display = 'flex';
-            document.getElementById('restartButton').style.display = 'flex';
-         }, 600);
       } else {
-         this.playAttackAnimation();
+         this.playHurtAnimation();
       }
    }
 
@@ -184,7 +181,7 @@ class Endboss extends moveableObject {
          this.moveLeftInterval = setInterval(() => {
             this.moveLeft();
          }, 1000 / 60);
-         setInterval(() => {
+         this.attackInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_ATTACK);
          }, 200);
          this.isMovingBecauseOfAttack = true;
@@ -196,26 +193,28 @@ class Endboss extends moveableObject {
     * Pauses the background music and plays the winning sound.
     */
    playDeadAnimation() {
-      let deadIndex = 0;
-      const deadInterval = setInterval(() => {
-         if (deadIndex < this.IMAGES_DEAD.length) {
-            this.loadImage(this.IMAGES_DEAD[deadIndex]);
-            deadIndex++;
-         } else {
-            clearInterval(deadInterval);
-         }
-      }, 200);
-      backgroundMusic.pause();
-      winning.play();
+      clearInterval(this.attackInterval);
+      setInterval(() => {
+         this.playAnimation(this.IMAGES_DEAD);
+      }, 300);
+      setTimeout(() => {
+         this.world.pauseGame();
+         backgroundMusic.pause();
+         sleep.volume = 0;
+         winning.play();
+         document.getElementById('winScreen').style.display = 'flex';
+         document.getElementById('restartButton').style.display = 'flex';
+      }, 900);
+   }
+
+   playHurtAnimation() {
+      const intervalId = setInterval(() => {
+         this.playAnimation(this.IMAGES_HURT);
+      }, 100);
+
+      setTimeout(() => {
+         clearInterval(intervalId);
+      }, 500);
+      this.playAttackAnimation();
    }
 }
-
-//   playHurtAnimation() {
-//    const intervalId = setInterval(() => {
-//       this.playAnimation(this.IMAGES_HURT);
-//   }, 100);
-
-//   setTimeout(() => {
-//       clearInterval(intervalId);
-//   }, 1000);
-// }
