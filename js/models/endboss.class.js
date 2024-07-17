@@ -206,7 +206,14 @@ class Endboss extends moveableObject {
          document.getElementById('restartButton').style.display = 'flex';
       }, 900);
    }
-
+   /**
+    * Plays the hurt animation for the character.
+    * This method initiates an interval to cycle through the hurt animation frames.
+    * After a specified duration, the interval is cleared to stop the animation.
+    * Additionally, it triggers the attack animation.
+    *
+    * @method
+    */
    playHurtAnimation() {
       const intervalId = setInterval(() => {
          this.playAnimation(this.IMAGES_HURT);

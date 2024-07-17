@@ -100,17 +100,12 @@ class World {
    }
 
    /**
-    * Pausiert das Spiel, indem alle wichtigen Spielprozesse angehalten werden.
+    * Pauses the Game, clears all relevant Intervals
     */
    pauseGame() {
       this.freezeGame = true;
-      // Stoppe alle laufenden Spielintervalle oder Animationen
       clearInterval(this.gameInterval);
       clearInterval(this.throwInterval);
-      // Stoppe alle laufenden Sounds
-      // allSounds.forEach((sound) => {
-      //    sound.pause();
-      // });
    }
 
    /**
