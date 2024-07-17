@@ -139,6 +139,7 @@ class Endboss extends moveableObject {
       this.loadImages(this.IMAGES_ATTACK);
       this.loadImages(this.IMAGES_DEAD);
       this.loadImages(this.IMAGES_HURT);
+      this.speed = 2;
       this.x = 2300;
       this.animate();
    }
@@ -159,8 +160,8 @@ class Endboss extends moveableObject {
     */
    getsHitByBottle() {
       clearInterval(this.animationInterval);
+      // this.playHurtAnimation();
       this.energy -= 20;
-      console.log(this.energy);
       if (this.energy <= 0) {
          this.energy = 0;
          this.playDeadAnimation();
@@ -208,3 +209,13 @@ class Endboss extends moveableObject {
       winning.play();
    }
 }
+
+//   playHurtAnimation() {
+//    const intervalId = setInterval(() => {
+//       this.playAnimation(this.IMAGES_HURT);
+//   }, 100);
+
+//   setTimeout(() => {
+//       clearInterval(intervalId);
+//   }, 1000);
+// }
