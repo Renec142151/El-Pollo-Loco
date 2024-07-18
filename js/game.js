@@ -29,11 +29,7 @@ function init() {
    world = new World(canvas, keyboard);
    addTouchEventListeners();
    backgroundMusic.play();
-   document.getElementById('startScreen').style.display = `none`;
-   document.getElementById('startButton').style.display = `none`;
-   document.getElementById('restartButton').style.display = `none`;
-   document.getElementById('gameOver').style.display = `none`;
-   document.getElementById('winScreen').style.display = `none`;
+   resetOverlayElements();
 }
 
 /**
@@ -308,4 +304,19 @@ function restart() {
    backgroundMusic.currentTime = 0;
    backgroundMusic.play();
    init();
+}
+
+/**
+ * Hides all overlay elements on the game screen.
+ *
+ * This function sets the display style of various overlay elements
+ * to 'none', effectively hiding the start screen, start button,
+ * restart button, game over screen, and win screen.
+ */
+function resetOverlayElements() {
+   document.getElementById('startScreen').style.display = 'none';
+   document.getElementById('startButton').style.display = 'none';
+   document.getElementById('restartButton').style.display = 'none';
+   document.getElementById('gameOver').style.display = 'none';
+   document.getElementById('winScreen').style.display = 'none';
 }

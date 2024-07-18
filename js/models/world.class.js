@@ -80,6 +80,16 @@ class World {
     * Array to store all active interval IDs.
     * @type {number[]}
     */
+
+   /**
+    * Array to store all active interval IDs.
+    *
+    * This array is used to keep track of the interval IDs created in the game,
+    * allowing for easy management and clearing of intervals when needed, such
+    * as when pausing or resetting the game.
+    *
+    * @type {number[]}
+    */
    intervals = [];
 
    /**
@@ -115,6 +125,10 @@ class World {
 
    /**
     * Clears all active intervals.
+    *
+    * This method iterates through the `intervals` array and clears each interval
+    * using `clearInterval`. After clearing all intervals, it resets the `intervals`
+    * array to an empty array.
     */
    clearIntervals() {
       this.intervals.forEach((interval) => clearInterval(interval));

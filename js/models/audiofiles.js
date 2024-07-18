@@ -4,7 +4,7 @@
  */
 const backgroundMusic = new Audio('./audio/music.mp3');
 backgroundMusic.loop = true;
-backgroundMusic.volume = 0.2;
+backgroundMusic.volume = 0.1;
 backgroundMusic.currentTime = 4;
 
 /**
