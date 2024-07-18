@@ -23,14 +23,17 @@ let bottleThrown = false;
  * Creates a new instance of the World class and adds touch event listeners.
  * @param {Object} params - Parameters for the level.
  */
-function init(params) {
-   document.getElementById('startScreen').style.display = `none`;
-   document.getElementById('startButton').style.display = `none`;
-   initLevel(params);
+function init() {
+   initLevel();
    canvas = document.getElementById('canvas');
    world = new World(canvas, keyboard); // Passes the Keyboard object to the World class
    addTouchEventListeners();
    backgroundMusic.play(); // Starts background music
+   document.getElementById('startScreen').style.display = `none`;
+   document.getElementById('startButton').style.display = `none`;
+   document.getElementById('restartButton').style.display = `none`;
+   document.getElementById('gameOver').style.display = `none`;
+   document.getElementById('winScreen').style.display = `none`;
 }
 
 /**
@@ -276,4 +279,27 @@ function showControls() {
 function closeControls() {
    const controlsDialog = document.getElementById('controlsDialog');
    controlsDialog.close();
+}
+
+function toggleLegalNotice() {
+   let legalNotice = document.getElementById('legalNotice');
+   if (legalNotice.style.display === 'none' || legalNotice.style.display === '') {
+      legalNotice.style.display = 'block';
+   } else {
+      legalNotice.style.display = 'none';
+   }
+}
+
+function togglePrivacyPolicy() {
+   let privacyPolice = document.getElementById('privacyPolicy');
+   if (privacyPolice.style.display === 'none' || privacyPolice.style.display === '') {
+      privacyPolice.style.display = 'block';
+   } else {
+      privacyPolice.style.display = 'none';
+   }
+}
+
+function restart(params) {
+   world.character.ernergy = 100;
+   init();
 }

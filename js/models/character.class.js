@@ -251,7 +251,7 @@ class Character extends moveableObject {
     */
    handleAnimation() {
       sleep.pause();
-      if (this.isDead()) {
+      if (this.isDead() && !this.deathAnimationPlayed) {
          this.handleDeathAnimation();
       } else if (this.isHurt()) {
          this.handleHurtAnimation();
