@@ -172,10 +172,8 @@ class World {
             coinsCollect.play();
             this.level.coins.splice(index, 1);
             this.coinsStatusBar.collectCoin();
-            if (this.coinsStatusBar.collectedCoins === 10) {
-               this.bottlesStatusBar.collectedBottles += 10;
-               this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 5);
-            }
+
+            this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10);
          }
       });
    }
@@ -191,12 +189,12 @@ class World {
                   let bottle = new ThrowableObject(this.character.x - 100, this.character.y + 100, this.character.otherDirection);
                   this.throwableObjects.push(bottle);
                   this.bottlesStatusBar.collectedBottles--;
-                  this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 5);
+                  this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10);
                } else {
                   let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this.character.otherDirection);
                   this.throwableObjects.push(bottle);
                   this.bottlesStatusBar.collectedBottles--;
-                  this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 5);
+                  this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 10);
                }
             }
          }, 100)
