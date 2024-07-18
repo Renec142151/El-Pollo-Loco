@@ -104,6 +104,7 @@ document.addEventListener('keydown', (event) => {
          break;
       case 68:
          keyboard.D = true;
+         bottleThrown = true;
          break;
    }
 });
@@ -300,6 +301,11 @@ function togglePrivacyPolicy() {
  * @param {Object} params - Additional parameters for the restart function (currently not used).
  */
 function restart() {
-   world.character.energy = 100;
+   if (world) {
+      world.pauseGame();
+   }
+   backgroundMusic.pause();
+   backgroundMusic.currentTime = 0;
+   backgroundMusic.play();
    init();
 }

@@ -77,10 +77,16 @@ class World {
    freezeGame = false;
 
    /**
+    * Array to store all active interval IDs.
+    * @type {number[]}
+    */
+   intervals = [];
+
+   /**
     * Creates an instance of the World class.
     * @param {HTMLCanvasElement} canvas - The canvas element used for rendering the game.
     */
-   constructor(canvas) {
+   constructor(canvas, keyboard) {
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
       this.keyboard = keyboard;
@@ -100,12 +106,19 @@ class World {
    }
 
    /**
-    * Pauses the Game, clears all relevant Intervals
+    * Pauses the game by clearing all intervals.
     */
    pauseGame() {
       this.freezeGame = true;
-      clearInterval(this.gameInterval);
-      clearInterval(this.throwInterval);
+      this.clearIntervals();
+   }
+
+   /**
+    * Clears all active intervals.
+    */
+   clearIntervals() {
+      this.intervals.forEach((interval) => clearInterval(interval));
+      this.intervals = [];
    }
 
    /**
@@ -113,12 +126,14 @@ class World {
     * Runs every 50 milliseconds.
     */
    run() {
-      this.gameInterval = setInterval(() => {
-         this.checkCollisions();
-         this.hitEnemyWithBottle();
-         this.collectBottles();
-         this.collectCoins();
-      }, 50);
+      this.intervals.push(
+         setInterval(() => {
+            this.checkCollisions();
+            this.hitEnemyWithBottle();
+            this.collectBottles();
+            this.collectCoins();
+         }, 50)
+      );
    }
 
    /**
@@ -150,27 +165,28 @@ class World {
          }
       });
    }
-
    /**
     * Checks for throw objects and creates a new ThrowableObject if the throw button is pressed.
     */
    checkThrowObjects() {
-      setInterval(() => {
-         if (bottleThrown && this.keyboard.D && !this.bottlesStatusBar.collectedBottles <= 0) {
-            bottleThrown = false;
-            if (this.character.otherDirection) {
-               let bottle = new ThrowableObject(this.character.x - 100, this.character.y + 100, this.character.otherDirection);
-               this.throwableObjects.push(bottle);
-               this.bottlesStatusBar.collectedBottles--;
-               this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 5);
-            } else {
-               let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this.character.otherDirection);
-               this.throwableObjects.push(bottle);
-               this.bottlesStatusBar.collectedBottles--;
-               this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 5);
+      this.intervals.push(
+         setInterval(() => {
+            if (bottleThrown && this.keyboard.D && !this.bottlesStatusBar.collectedBottles <= 0) {
+               bottleThrown = false;
+               if (this.character.otherDirection) {
+                  let bottle = new ThrowableObject(this.character.x - 100, this.character.y + 100, this.character.otherDirection);
+                  this.throwableObjects.push(bottle);
+                  this.bottlesStatusBar.collectedBottles--;
+                  this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 5);
+               } else {
+                  let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100, this.character.otherDirection);
+                  this.throwableObjects.push(bottle);
+                  this.bottlesStatusBar.collectedBottles--;
+                  this.bottlesStatusBar.setPercentage(this.bottlesStatusBar.collectedBottles * 5);
+               }
             }
-         }
-      }, 100);
+         }, 100)
+      );
    }
 
    /**
@@ -246,7 +262,7 @@ class World {
 
    /**
     * Adds an array of objects to the map.
-    * @param {DrawableObject[]} objects - An array of objects to be drawn on the canvas.
+    * @param {DrawableObject[]} objects
     */
    addObjectsToMap(objects) {
       objects.forEach((object) => {
@@ -256,7 +272,7 @@ class World {
 
    /**
     * Adds a single object to the map.
-    * @param {DrawableObject} moveableObject - The object to be drawn on the canvas.
+    * @param {DrawableObject} moveableObject
     */
    addToMap(moveableObject) {
       if (moveableObject.otherDirection) {
@@ -271,7 +287,7 @@ class World {
 
    /**
     * Flips the image horizontally for objects facing the other direction.
-    * @param {moveableObject} moveableObject - The object whose image is to be flipped.
+    * @param {moveableObject} moveableObject
     */
    flipImage(moveableObject) {
       this.ctx.save();
@@ -282,7 +298,7 @@ class World {
 
    /**
     * Reverts the image flip done by `flipImage`.
-    * @param {moveableObject} moveableObject - The object whose image flip is to be reverted.
+    * @param {moveableObject} moveableObject
     */
    flipImageBack(moveableObject) {
       moveableObject.x = moveableObject.x * -1;

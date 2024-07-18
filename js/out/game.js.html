@@ -44,26 +44,30 @@ let world;
  */
 let keyboard = new Keyboard();
 
+let bottleThrown = false;
+
 /**
  * Initializes the game and hides the start screen.
  * Creates a new instance of the World class and adds touch event listeners.
  * @param {Object} params - Parameters for the level.
  */
-function init(params) {
+function init() {
+   initLevel();
+   canvas = document.getElementById('canvas');
+   world = new World(canvas, keyboard);
+   addTouchEventListeners();
+   backgroundMusic.play();
    document.getElementById('startScreen').style.display = `none`;
    document.getElementById('startButton').style.display = `none`;
-   initLevel(params);
-   canvas = document.getElementById('canvas');
-   world = new World(canvas, keyboard); // Passes the Keyboard object to the World class
-   addTouchEventListeners();
-   backgroundMusic.play(); // Starts background music
+   document.getElementById('restartButton').style.display = `none`;
+   document.getElementById('gameOver').style.display = `none`;
+   document.getElementById('winScreen').style.display = `none`;
 }
 
 /**
  * Adds touch event listeners for game controls.
  */
 function addTouchEventListeners() {
-   // Adds event listeners for moving left
    document.getElementById('touch-move-left').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.LEFT = true;
@@ -74,7 +78,6 @@ function addTouchEventListeners() {
       keyboard.LEFT = false;
    });
 
-   // Adds event listeners for moving right
    document.getElementById('touch-move-right').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.RIGHT = true;
@@ -85,7 +88,6 @@ function addTouchEventListeners() {
       keyboard.RIGHT = false;
    });
 
-   // Adds event listeners for jumping
    document.getElementById('touch-jump').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.SPACE = true;
@@ -96,7 +98,6 @@ function addTouchEventListeners() {
       keyboard.SPACE = false;
    });
 
-   // Adds event listeners for attacking
    document.getElementById('touch-attack').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.D = true;
@@ -105,6 +106,7 @@ function addTouchEventListeners() {
    document.getElementById('touch-attack').addEventListener('touchend', (event) => {
       event.preventDefault();
       keyboard.D = false;
+      bottleThrown = true;
    });
 }
 
@@ -113,22 +115,22 @@ function addTouchEventListeners() {
  */
 document.addEventListener('keydown', (event) => {
    switch (event.keyCode) {
-      case 39: // Right arrow key
+      case 39:
          keyboard.RIGHT = true;
          break;
-      case 37: // Left arrow key
+      case 37:
          keyboard.LEFT = true;
          break;
-      case 38: // Up arrow key
+      case 38:
          keyboard.UP = true;
          break;
-      case 40: // Down arrow key
+      case 40:
          keyboard.DOWN = true;
          break;
-      case 32: // Space key
+      case 32:
          keyboard.SPACE = true;
          break;
-      case 68: // 'D' key for attack
+      case 68:
          keyboard.D = true;
          break;
    }
@@ -136,58 +138,72 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keyup', (event) => {
    switch (event.keyCode) {
-      case 39: // Right arrow key
+      case 39:
          keyboard.RIGHT = false;
          break;
-      case 37: // Left arrow key
+      case 37:
          keyboard.LEFT = false;
          break;
-      case 38: // Up arrow key
+      case 38:
          keyboard.UP = false;
          break;
-      case 40: // Down arrow key
+      case 40:
          keyboard.DOWN = false;
          break;
-      case 32: // Space key
+      case 32:
          keyboard.SPACE = false;
          break;
-      case 68: // 'D' key for attack
+      case 68:
          keyboard.D = false;
+         bottleThrown = true;
          break;
    }
 });
 
 /**
- * Toggles the fullscreen mode on or off.
+ * Requests the browser to enter fullscreen mode for the given element.
+ * Handles different browser implementations.
+ * @param {Element} element - The DOM element to be displayed in fullscreen mode.
+ */
+function requestFullscreen(element) {
+   if (element.requestFullscreen) {
+      element.requestFullscreen();
+   } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+   } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+   } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+   }
+}
+
+/**
+ * Requests the browser to exit fullscreen mode.
+ * Handles different browser implementations.
+ */
+function exitFullscreen() {
+   if (document.exitFullscreen) {
+      document.exitFullscreen();
+   } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+   } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+   } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+   }
+}
+
+/**
+ * Toggles fullscreen mode for the element with the ID 'fullscreen'.
+ * If the browser is not in fullscreen mode, it requests fullscreen for the element.
+ * If the browser is in fullscreen mode, it requests to exit fullscreen.
  */
 function toggleFullscreen() {
    const fullscreenElement = document.getElementById('fullscreen');
    if (!document.fullscreenElement) {
-      if (fullscreenElement.requestFullscreen) {
-         fullscreenElement.requestFullscreen();
-      } else if (fullscreenElement.mozRequestFullScreen) {
-         // Firefox
-         fullscreenElement.mozRequestFullScreen();
-      } else if (fullscreenElement.webkitRequestFullscreen) {
-         // Chrome, Safari and Opera
-         fullscreenElement.webkitRequestFullscreen();
-      } else if (fullscreenElement.msRequestFullscreen) {
-         // IE/Edge
-         fullscreenElement.msRequestFullscreen();
-      }
+      requestFullscreen(fullscreenElement);
    } else {
-      if (document.exitFullscreen) {
-         document.exitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-         // Firefox
-         document.mozCancelFullScreen();
-      } else if (document.webkitExitFullscreen) {
-         // Chrome, Safari and Opera
-         document.webkitExitFullscreen();
-      } else if (document.msExitFullscreen) {
-         // IE/Edge
-         document.msExitFullscreen();
-      }
+      exitFullscreen();
    }
 }
 
@@ -197,16 +213,13 @@ function toggleFullscreen() {
 function checkOrientation() {
    const rotateMessage = document.getElementById('rotateMessage');
    const canvas = document.getElementById('fullscreen');
-   const startScreen = document.getElementById('startScreen');
 
-   if (window.innerWidth &lt;= 900 &amp;&amp; window.innerHeight > window.innerWidth) {
+   if (window.innerWidth &lt;= 930 &amp;&amp; window.innerHeight > window.innerWidth) {
       rotateMessage.style.display = 'flex';
       canvas.style.display = 'none';
-      startScreen.style.display = 'none';
    } else {
       rotateMessage.style.display = 'none';
       canvas.style.display = 'block';
-      startScreen.style.display = 'flex';
    }
 }
 
@@ -285,6 +298,39 @@ function closeControls() {
    const controlsDialog = document.getElementById('controlsDialog');
    controlsDialog.close();
 }
+
+/**
+ * Toggles the visibility of the legal notice.
+ */
+function toggleLegalNotice() {
+   let legalNotice = document.getElementById('legalNotice');
+   if (legalNotice.style.display === 'none' || legalNotice.style.display === '') {
+      legalNotice.style.display = 'block';
+   } else {
+      legalNotice.style.display = 'none';
+   }
+}
+
+/**
+ * Toggles the visibility of the privacy policy.
+ */
+function togglePrivacyPolicy() {
+   let privacyPolicy = document.getElementById('privacyPolicy');
+   if (privacyPolicy.style.display === 'none' || privacyPolicy.style.display === '') {
+      privacyPolicy.style.display = 'block';
+   } else {
+      privacyPolicy.style.display = 'none';
+   }
+}
+
+/**
+ * Restarts the game by resetting the character's energy and re-initializing the game world.
+ * @param {Object} params - Additional parameters for the restart function (currently not used).
+ */
+function restart() {
+   world.character.energy = 100;
+   init();
+}
 </code></pre>
         </article>
     </section>
@@ -295,13 +341,13 @@ function closeControls() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addTouchEventListeners">addTouchEventListeners</a></li><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#checkOrientation">checkOrientation</a></li><li><a href="global.html#closeControls">closeControls</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#keyboard">keyboard</a></li><li><a href="global.html#showControls">showControls</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#toggleMuteTouch">toggleMuteTouch</a></li><li><a href="global.html#world">world</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addTouchEventListeners">addTouchEventListeners</a></li><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#checkOrientation">checkOrientation</a></li><li><a href="global.html#closeControls">closeControls</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#keyboard">keyboard</a></li><li><a href="global.html#requestFullscreen">requestFullscreen</a></li><li><a href="global.html#restart">restart</a></li><li><a href="global.html#showControls">showControls</a></li><li><a href="global.html#toggleFullscreen">toggleFullscreen</a></li><li><a href="global.html#toggleLegalNotice">toggleLegalNotice</a></li><li><a href="global.html#toggleMute">toggleMute</a></li><li><a href="global.html#toggleMuteTouch">toggleMuteTouch</a></li><li><a href="global.html#togglePrivacyPolicy">togglePrivacyPolicy</a></li><li><a href="global.html#world">world</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Jul 17 2024 10:41:46 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Jul 18 2024 11:11:04 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>
