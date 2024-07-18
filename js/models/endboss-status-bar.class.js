@@ -57,7 +57,7 @@ class EndbossStatusBar extends DrawableObject {
     * @param {number} percentage - The new percentage of health (0 to 100).
     */
    setPercentage(percentage) {
-      if (percentage < 0) percentage = 0; // Clamp percentage to the range [0, 100]
+      if (percentage < 0) percentage = 0;
       let path = this.IMAGES_ENDBOSS_STATUS[Math.floor(percentage / 20)];
       if (path) {
          this.loadImage(path);

@@ -162,7 +162,6 @@ class Endboss extends moveableObject {
     */
    getsHitByBottle() {
       clearInterval(this.animationInterval);
-      // this.playHurtAnimation();
       this.energy -= 20;
       if (this.energy <= 0 && !this.world.character.deathAnimationPlayed) {
          this.energy = 0;

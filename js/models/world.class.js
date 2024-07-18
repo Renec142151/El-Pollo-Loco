@@ -128,7 +128,7 @@ class World {
       this.level.bottles.forEach((bottle, index) => {
          if (this.character.isColliding(bottle)) {
             bottleCollect.play();
-            this.level.bottles.splice(index, 1); // Remove the bottle from the level
+            this.level.bottles.splice(index, 1);
             this.bottlesStatusBar.collectBottle();
          }
       });
@@ -218,12 +218,12 @@ class World {
       this.ctx.translate(this.camera_x, 0);
       this.addObjectsToMap(this.level.backgroundObjects);
 
-      this.ctx.translate(-this.camera_x, 0); // BACK
+      this.ctx.translate(-this.camera_x, 0);
       this.addToMap(this.bottlesStatusBar);
       this.addToMap(this.statusBar);
       this.addToMap(this.coinsStatusBar);
       this.addToMap(this.endbossStatusBar);
-      this.ctx.translate(this.camera_x, 0); // FORWARDS
+      this.ctx.translate(this.camera_x, 0);
 
       this.addToMap(this.character);
 
@@ -235,7 +235,6 @@ class World {
 
       this.ctx.translate(-this.camera_x, 0);
 
-      // Request the next animation frame to continue drawing the world
       let self = this;
       requestAnimationFrame(() => {
          if (this.freezeGame) {

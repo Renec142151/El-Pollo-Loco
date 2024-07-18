@@ -81,9 +81,9 @@ class ThrowableObject extends moveableObject {
       this.throwAnimation();
       setInterval(() => {
          if (this.isCharacterOtherDirection) {
-            this.x -= 10; // Move left if character is facing the opposite direction
+            this.x -= 10;
          } else {
-            this.x += 10; // Move right otherwise
+            this.x += 10;
          }
       }, 25);
    }
@@ -103,15 +103,15 @@ class ThrowableObject extends moveableObject {
     * Plays the splash sound and shows the splash animation.
     */
    bottleSplashAnimation() {
-      splashGlassSound.play(); // Play the splash sound effect
-      clearInterval(this.throwAnimationInterval); // Stop the rotation animation
+      splashGlassSound.play();
+      clearInterval(this.throwAnimationInterval);
       let splashFrameIndex = 0;
       this.splashAnimationInterval = setInterval(() => {
          if (splashFrameIndex < this.BOTTLE_SPLASH.length) {
             this.playAnimation(this.BOTTLE_SPLASH);
             splashFrameIndex++;
          } else {
-            clearInterval(this.splashAnimationInterval); // Stop the splash animation when done
+            clearInterval(this.splashAnimationInterval);
          }
       }, 80);
    }

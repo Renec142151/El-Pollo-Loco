@@ -26,9 +26,9 @@ let bottleThrown = false;
 function init() {
    initLevel();
    canvas = document.getElementById('canvas');
-   world = new World(canvas, keyboard); // Passes the Keyboard object to the World class
+   world = new World(canvas, keyboard);
    addTouchEventListeners();
-   backgroundMusic.play(); // Starts background music
+   backgroundMusic.play();
    document.getElementById('startScreen').style.display = `none`;
    document.getElementById('startButton').style.display = `none`;
    document.getElementById('restartButton').style.display = `none`;
@@ -40,7 +40,6 @@ function init() {
  * Adds touch event listeners for game controls.
  */
 function addTouchEventListeners() {
-   // Adds event listeners for moving left
    document.getElementById('touch-move-left').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.LEFT = true;
@@ -51,7 +50,6 @@ function addTouchEventListeners() {
       keyboard.LEFT = false;
    });
 
-   // Adds event listeners for moving right
    document.getElementById('touch-move-right').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.RIGHT = true;
@@ -62,7 +60,6 @@ function addTouchEventListeners() {
       keyboard.RIGHT = false;
    });
 
-   // Adds event listeners for jumping
    document.getElementById('touch-jump').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.SPACE = true;
@@ -73,7 +70,6 @@ function addTouchEventListeners() {
       keyboard.SPACE = false;
    });
 
-   // Adds event listeners for attacking
    document.getElementById('touch-attack').addEventListener('touchstart', (event) => {
       event.preventDefault();
       keyboard.D = true;
@@ -91,22 +87,22 @@ function addTouchEventListeners() {
  */
 document.addEventListener('keydown', (event) => {
    switch (event.keyCode) {
-      case 39: // Right arrow key
+      case 39:
          keyboard.RIGHT = true;
          break;
-      case 37: // Left arrow key
+      case 37:
          keyboard.LEFT = true;
          break;
-      case 38: // Up arrow key
+      case 38:
          keyboard.UP = true;
          break;
-      case 40: // Down arrow key
+      case 40:
          keyboard.DOWN = true;
          break;
-      case 32: // Space key
+      case 32:
          keyboard.SPACE = true;
          break;
-      case 68: // 'D' key for attack
+      case 68:
          keyboard.D = true;
          break;
    }
@@ -114,22 +110,22 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keyup', (event) => {
    switch (event.keyCode) {
-      case 39: // Right arrow key
+      case 39:
          keyboard.RIGHT = false;
          break;
-      case 37: // Left arrow key
+      case 37:
          keyboard.LEFT = false;
          break;
-      case 38: // Up arrow key
+      case 38:
          keyboard.UP = false;
          break;
-      case 40: // Down arrow key
+      case 40:
          keyboard.DOWN = false;
          break;
-      case 32: // Space key
+      case 32:
          keyboard.SPACE = false;
          break;
-      case 68: // 'D' key for attack
+      case 68:
          keyboard.D = false;
          bottleThrown = true;
          break;
@@ -145,13 +141,10 @@ function requestFullscreen(element) {
    if (element.requestFullscreen) {
       element.requestFullscreen();
    } else if (element.mozRequestFullScreen) {
-      // Firefox
       element.mozRequestFullScreen();
    } else if (element.webkitRequestFullscreen) {
-      // Chrome, Safari, and Opera
       element.webkitRequestFullscreen();
    } else if (element.msRequestFullscreen) {
-      // IE/Edge
       element.msRequestFullscreen();
    }
 }
@@ -164,13 +157,10 @@ function exitFullscreen() {
    if (document.exitFullscreen) {
       document.exitFullscreen();
    } else if (document.mozCancelFullScreen) {
-      // Firefox
       document.mozCancelFullScreen();
    } else if (document.webkitExitFullscreen) {
-      // Chrome, Safari, and Opera
       document.webkitExitFullscreen();
    } else if (document.msExitFullscreen) {
-      // IE/Edge
       document.msExitFullscreen();
    }
 }
@@ -281,6 +271,9 @@ function closeControls() {
    controlsDialog.close();
 }
 
+/**
+ * Toggles the visibility of the legal notice.
+ */
 function toggleLegalNotice() {
    let legalNotice = document.getElementById('legalNotice');
    if (legalNotice.style.display === 'none' || legalNotice.style.display === '') {
@@ -290,16 +283,23 @@ function toggleLegalNotice() {
    }
 }
 
+/**
+ * Toggles the visibility of the privacy policy.
+ */
 function togglePrivacyPolicy() {
-   let privacyPolice = document.getElementById('privacyPolicy');
-   if (privacyPolice.style.display === 'none' || privacyPolice.style.display === '') {
-      privacyPolice.style.display = 'block';
+   let privacyPolicy = document.getElementById('privacyPolicy');
+   if (privacyPolicy.style.display === 'none' || privacyPolicy.style.display === '') {
+      privacyPolicy.style.display = 'block';
    } else {
-      privacyPolice.style.display = 'none';
+      privacyPolicy.style.display = 'none';
    }
 }
 
-function restart(params) {
-   world.character.ernergy = 100;
+/**
+ * Restarts the game by resetting the character's energy and re-initializing the game world.
+ * @param {Object} params - Additional parameters for the restart function (currently not used).
+ */
+function restart() {
+   world.character.energy = 100;
    init();
 }
